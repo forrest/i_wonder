@@ -1,10 +1,10 @@
 <div id="i_wonder_wrapper">
-	<h1>Reports & Test</h1>
+	<h1>Reports</h1>
 
 	<% if @reports.empty? %>
 		<p class="empty_list">You don't have any reports</p>
 	<% else %>
-		<ul id="report_list">
+		<ul id="report_list" class="primary_list">
 			<% for report in @reports do %>
 				<li>
 					<%= link_to url_for(:action => :show, :id => report.id) do %>

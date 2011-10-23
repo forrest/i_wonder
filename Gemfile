@@ -7,3 +7,4 @@ gemspec
 
 gem "jquery-rails"
 gem "delayed_job"
+gem "hash_accessor"

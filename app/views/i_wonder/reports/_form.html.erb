@@ -1,7 +1,7 @@
-<%= form_for @report, :url => url_for(:action => (@report.new_record? ? :create : :update)) do |f| %>
+<%= form_for @report do |f| %>
 	<% if @report.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this blah from being saved:</h2>
+      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
 
       <ul>
       <% @report.errors.full_messages.each do |msg| %>
@@ -30,6 +30,5 @@
 	<div class="field">
 		<%= f.submit %>
 	</div>
-	
 	
 <% end %>

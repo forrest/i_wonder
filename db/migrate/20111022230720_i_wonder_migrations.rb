@@ -37,6 +37,8 @@ class IWonderMigrations < ActiveRecord::Migration
     # used for line and pie charts
     create_table :i_wonder_metrics do |t|
       t.string :name
+      t.text :options
+      
       t.text :collection_method
       t.boolean :archived
       

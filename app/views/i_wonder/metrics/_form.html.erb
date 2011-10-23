@@ -1,0 +1,37 @@
+<%= form_for @metric do |f| %>
+	<% if @metric.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@metric.errors.count, "error") %> prohibited this metric from being saved:</h2>
+
+      <ul>
+      <% @metric.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<div class="field">
+		<%= f.label :name %>
+		<%= f.text_field :name, :size => 50 %>
+	</div>
+	
+	<div class="field">
+		<%= f.label :collection_type %>
+		<%= f.select :collection_type, {:event_count 			=> {:label => "Simple Event Counter"}, 
+																		:model_count 			=> {:label => "Simple Model Count"}, 
+																		:custom						=> {:label => "Custom"},
+																		:conversion_rate	=> {:label => "Conversion Rate", :disabled => true}} %>
+	</div>
+	
+	
+	
+	
+	
+
+	<div class="field">
+		<%= f.submit %>
+	</div>
+	
+	
+<% end %>

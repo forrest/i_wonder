@@ -52,7 +52,7 @@ div {
 
 #notice { color: green; }
 
-form .field_with_errors {
+form .field_with_errors { display:inline;
   label { color:red; }
   input { color:red; border-color:red;}
 }
