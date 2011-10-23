@@ -9,6 +9,7 @@ Key Differences of IWonder:
 - Data is collected periodically. Lots of useful scenerios for this. (info get's deleted, overwritten, etc)
 - Different reports (and some metrics) can be setup and changed without having to modify your code. 
 - Different reports can be generated without coding knowledge.
+- Each hit and visitor comes with a referrer and IP code. Because that events will be transferred to the user when they signup, you can see which campaigns are resulting in actual signups and paid conversions.
 
 More big plans!
 
@@ -16,10 +17,14 @@ More big plans!
 - E-mail open tracking (for application generated e-mails like the 'Welcome E-mail')
 - Feature request buttons. - details coming soon
 
+== Requirements
 
-Note: Must be used with an SQL style DB currently.
+* Do to performance optimization IWonder must be used with an SQL style DB currently.
+* Rails 3.1 or higher
+* Ability to run hourly rake tasks (rake cron)
+* Ability to run a background worker process (delayed_job)
 
-== Installation in Rails 3.1
+== Installation
 
 === Install the Gem
 
