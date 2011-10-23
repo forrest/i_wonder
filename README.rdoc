@@ -1,6 +1,22 @@
 = IWonder (Not working yet.)
 
-Flexible Analytics, and Testing for every corner of your rails application. I read "The Lean Startup" and got inspired.
+Flexible Analytics, and Testing for every corner of your rails application. I read "The Lean Startup" and got inspired. There were a few good solutions, but none of them quite did what I was looking for. I highly recommend you check out Vanity (http://vanity.labnotes.org/) as it is a drop-in solution for many rails apps.
+
+Key Differences of IWonder:
+
+# Events get tracked by session, as well as an optional user and/or account. This allows the tracking of a users history.
+# Tests can be performed against a session (non-user), logged in user, or an entire account. For account based apps, having different versions for different users can be bad.
+# Different reports (and some metrics) can be setup and changed without having to modify your code. 
+# Different reports can be generated without coding knowledge.
+
+More big plans!
+
+# Long term campaign tracking
+  - see how many of those visits turned into signups, then paid accounts, etc.
+# E-mail open tracking 
+  - for application generated e-mails like the 'Welcome E-mail'
+# Feature request buttons. - details coming soon
+
 
 Note: Must be used with an SQL style DB currently.
 
