@@ -71,7 +71,7 @@ We also require the highcharts javascript file in your applications asset path. 
 
 === Security
 
-IWonder's controllers will run any before filters you have set in your application controller. You can easily check for a password or admin status there.
+IWonder's controllers will run any <code>:before_filters</code> you have set in your application controller. You can easily check for a password or admin status there.
 
 === Options & Configurations
 
@@ -113,7 +113,9 @@ In progress...
 
 == Licensing
 
-This application is released under the MIT license. However, in the dummy app for testing purposes, it contains the Highcharts javascript library (highcharts.com). It is deployed under the "Creative Commons Attribution-NonCommercial 3.0 License". It is free for testing and development, but not for commercial use. Please see the details at http://highcharts.com/license
+This application is released under the MIT license. 
+
+However, in the dummy app for testing purposes, it contains the Highcharts javascript library (highcharts.com) which is released under the "Creative Commons Attribution-NonCommercial 3.0 License". It is free for testing and development, but not for commercial use. Please see the details at http://highcharts.com/license
 
 ---
 
