@@ -10,16 +10,17 @@ Key Differences of IWonder:
 - Different reports (and some metrics) can be setup and changed without having to modify your code. 
 - Different reports can be generated without coding knowledge.
 - Each hit and visitor comes with a referrer and IP code. Because that events will be transferred to the user when they signup, you can see which campaigns are resulting in actual signups and paid conversions.
+- Because the session events get added to the user when they log in, you avoid false positives on marketing analytics from visitors returning on different devices. If your application has a mobile interface, this basically avoids all your users being logged as visitors twice.
 
 More big plans!
 
-- Long term campaign tracking (see how many of those visits turned into signups, then paid accounts, etc.)
+- Long term campaign tracking interface (the events already get logged, but this will make it easier to see results)
 - E-mail open tracking (for application generated e-mails like the 'Welcome E-mail')
 - Feature request buttons. - details coming soon
 
 == Requirements
 
-* Do to performance optimization IWonder must be used with an SQL style DB currently.
+* Due to performance optimization IWonder must be used with an SQL style DB currently.
 * Rails 3.1 or higher
 * Ability to run hourly rake tasks (rake cron)
 * Ability to run a background worker process (delayed_job)
