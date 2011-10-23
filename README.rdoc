@@ -6,7 +6,7 @@ Note: Must be used with an SQL style DB currently.
 
 == Installation in Rails 3.1
 
-==== Install the Gem
+=== Install the Gem
 
 Add to your <code>Gemfile</code>:
 
@@ -16,7 +16,7 @@ and install:
   
   bundle install
   
-==== Migrate the DB
+=== Migrate the DB
 
 Generate the migration files and migrate your database:
 
@@ -24,7 +24,7 @@ Generate the migration files and migrate your database:
   rake db:migrate
 
 
-==== Create the dashboard controller
+=== Create the dashboard controller
 
 Add the engine to your routes. This is where the dashboard will be hosted
 
@@ -40,12 +40,12 @@ must include a yield in the HTML header so the CSS and Javascript can be loaded.
   
 This engine also assumes that your layout will handle the flash notifications.
 
-===== Example:
+===== Example application layout:
 
   <html>
     <head>
       
-      ... your includes and header stuff here ...
+      ... your javascript/css/meta/header stuff here ...
       
       <%= yield :extra_scripts_and_styles %>
     </head>
@@ -56,16 +56,17 @@ This engine also assumes that your layout will handle the flash notifications.
   </html
 
 
-==== Setting up the hourly cron task
+=== Setting up the hourly cron task
 
 This gem hooks into the "<code>rake cron</code>" request. It can't take snapshots of your metrics any faster than this cron is run. We recommend every hour.
 This will be run automatically if you are hosted on Heroku and have the 'hourly cron' add-on enabled.
 
 
-==== Install Dependecies
+=== Install Dependecies
 
 This Gem requires the Delayed::Job gem. Installation and configuration instructions can be found at http://github.com/tobi/delayed_job.
 
+We also require the highcharts javascript file in your applications asset path. We don't include it because of licencing reasons. It's free for testing and development. You can find it at http://www.highcharts.com/
 
   
 == Usage
