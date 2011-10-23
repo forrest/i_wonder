@@ -1,0 +1,93 @@
+= IWonder (Not working yet.)
+
+Flexible Analytics, and Testing for every corner of your rails application. I read "The Lean Startup" and got inspired.
+
+Note: Must be used with an SQL style DB currently.
+
+== Installation in Rails 3.1
+
+==== Install the Gem
+
+In your <code>Gemfile</code>:
+
+  gem "i_wonder"
+
+Then install the gem with:
+  
+  bundle install
+  
+==== Migrate the DB
+
+Create the db migration:
+
+  rake i_wonder:install:migrations
+  
+And migrate your database:
+
+  rake db:migrate
+
+
+==== Create the dashboard controller
+
+Add the engine to your routes. This is where the dashboard will be hosted
+
+  Rails.application.routes.draw do
+    ...
+    mount IWonder::Engine => "/i_wonder"
+  end
+
+
+
+==== Setting up the hourly cron task
+
+This gem hooks into the "<code>rake cron</code>" request. It can't take snapshots of your metrics any faster than this cron is run. We recommend every hour.
+This will be run automatically if you are hosted on Heroku and have the 'hourly cron' add-on enabled.
+
+
+==== Install Dependecies
+
+This Gem requires the Delayed::Job gem. Installation and configuration instructions can be found at http://github.com/tobi/delayed_job.
+
+
+  
+== Usage
+
+=== Event tracking
+
+==== Setting session, user, and account details
+
+This gem will track the visitor with a permanent cookie (will remember them next visit). However, it can also track users and accounts. Simply call one or both of these methods anywhere in the controller. When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be removed if the user has an earlier dated :new_visitor event on their account.
+
+  i_wonder_for_user_id(user_id)
+
+or
+  
+  i_wonder_for_account_id(account_id)
+  
+:hits and :new_visitors will be logged automatically. You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller.
+You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code>
+or <code>:account_id</code> in the options, if you want them recorded.
+  
+  
+=== Generating Reports
+
+
+
+
+
+== Configuration
+
+If you want to configure this gem, add this to an initializer
+
+  IWonder.configuration do |c|
+    c.controllers_to_ignore = [:admin]
+  end
+  
+
+== Contributing & Reporting Issues
+
+
+---
+
+
+Copyright on Updates - Copyright (c) 2011 OctopusApp Inc. ({getjobber.com}[http://getjobber.com]), released under the MIT license

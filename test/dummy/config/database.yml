@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  database: i_wonder_development
+  username: postgres
+  password: password
+  
+test:
+  adapter: postgresql
+  database: i_wonder_test
+  username: postgres
+  password: password
