@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pg"
   s.add_development_dependency "pry"
   s.add_development_dependency "sass", '~> 3.1'
+  s.add_development_dependency "timecop"
   
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc"]

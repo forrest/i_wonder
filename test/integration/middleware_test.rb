@@ -79,7 +79,10 @@ class MiddlewareTest < ActionDispatch::IntegrationTest
   end
   
   test "ignores controller in do_no_log list" do
-    pending
+    IWonder::Event.destroy_all
+    get "i_wonder/events"
+    assert_response :success
+    assert_equal 0, IWonder::Event.count
   end
   
 end

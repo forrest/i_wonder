@@ -15,7 +15,7 @@ module IWonder
     
     def initialize
       @keep_hits_for = 2.weeks
-      @controllers_to_ignore = []
+      @controllers_to_ignore = ALWAYS_AVOID_CONTROLLERS
       @only_log_hits_on_200 = true
     end
     

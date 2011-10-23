@@ -31,6 +31,31 @@ module IWonder
         
         Event.connection.execute "INSERT INTO #{table_name} (#{key_str}) values (#{value_str})"
       end
+      
+      # returns an array of hashes. Each one has a {:event_type, :count, :most_recent} and is sorted by decending most_recent
+      def groups
+        Event.select("event_type, COUNT(event_type) as count, MAX(created_at) as most_recent").group("event_type").order("most_recent DESC").collect{|e|
+          {
+            :event_type => e["event_type"],
+            :count => e["count"].to_i,
+            :most_recent => Time.parse(e["most_recent"])
+          }
+        }
+      end
+
+      
+      def get_details_for_event_type(type)
+        Event.where(:event_type => type).select("COUNT(event_type) as count, MAX(created_at) as most_recent").group("event_type").collect{|e|
+          {
+            :event_type => type,
+            :count => e["count"].to_i,
+            :most_recent => Time.parse(e["most_recent"])
+          }
+        }.first
+      end
+      
+
+      
     end
   end
 end

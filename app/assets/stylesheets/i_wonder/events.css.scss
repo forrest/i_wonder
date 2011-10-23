@@ -2,3 +2,9 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+@import "_shared.css.scss";
+
+#event_list {
+  li span {margin-right:30px;}
+}
