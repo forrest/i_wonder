@@ -8,9 +8,12 @@ Note: Must be used with an SQL style DB currently.
 
 ==== Install the Gem
 
-Add to your <code>Gemfile</code> and run <code>bundler</code>:
+Add to your <code>Gemfile</code>:
 
   gem "i_wonder"
+  
+and install:
+  
   bundle install
   
 ==== Migrate the DB
@@ -27,9 +30,25 @@ Add the engine to your routes. This is where the dashboard will be hosted
 
   Rails.application.routes.draw do
     ...
-    mount IWonder::Engine => "/super_awesome_admin_reports"
+    mount IWonder::Engine => "/super_analytics_engine"
   end
 
+This engine will use your standard application layout (unless you set a different layout in the configurations explained later). Which ever layout you use, you
+must include a yield in the HTML header so the CSS and Javascript can be loaded. This engine also assumes that your layout will handle the <code>flash</code> notifications.
+
+
+  <html>
+    <head>
+      
+      ... your includes and header stuff here ...
+      
+      <%= yield :extra_scripts_and_styles %>
+    </head>
+    <body>
+      <%= notifications %>
+      <%= yield %>
+    </body>
+  </html
 
 
 ==== Setting up the hourly cron task

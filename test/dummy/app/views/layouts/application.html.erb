@@ -4,6 +4,9 @@
   <title>Dummy</title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
+
+	<%= yield :extra_scripts_and_styles %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>

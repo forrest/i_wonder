@@ -3,7 +3,7 @@ module IWonder
     attr_accessible :data
     serialize :complex_data, Hash
     
-    belongs_to :metric, :foreign_key => "i_wonder_metric_id"
+    belongs_to :metric
     
     validates_presence_of :metric
     validate :has_some_data

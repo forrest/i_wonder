@@ -2,8 +2,9 @@ module IWonder
   class Metric < ActiveRecord::Base
     attr_accessible :name, :frequency, :collection_method
 
-    has_many :reports, :through => :report_membership
-    has_many :snapshots, :foreign_key => "i_wonder_metric_id"
+    has_many :report_memberships
+    has_many :reports, :through => :report_memberships
+    has_many :snapshots
 
     validates_length_of :name, :minimum => 1, :message => "can't be blank."
 

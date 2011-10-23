@@ -1,0 +1,47 @@
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require_self
+ *= require_tree . 
+*/
+
+$light_blue_box_background:#F8F8F8;
+$light_blue_box_border:#E9E9E9;
+
+#i_wonder_wrapper {
+  p.empty_list {color:#666; }
+
+  ul#report_list { padding:0px; margin:10px 0; border:1px solid $light_blue_box_border; border-bottom:none; background-color:$light_blue_box_background;
+    li { list-style:none; padding:0px; margin:0px; border-bottom:1px solid $light_blue_box_border;
+      a {display:block; padding:5px; text-decoration:none; height:40px;
+        h3 {padding:0px; margin:0 0 10px 0; font-size:110%; color:#000; font-weight:normal;
+          span {color:#555; font-weight:normal;}
+        }
+        p {padding:0px; margin:0px; font-size:85%; color:#333;}
+        &:hover { background-color:#eef; color:black;
+          * {text-decoration:none; color:blue;}
+        }
+      } 
+    }
+  }
+
+  form.new_i_wonder_report, form.edit_i_wonder_report { background-color:$light_blue_box_background; border:1px solid $light_blue_box_border; padding:10px 15px; display:inline-block;
+    h3 {margin:0 0 10px 0;}
+    .field { margin:10px 0;
+      label {display:block; float:left; width:100px; text-align:right; margin-right:5px; font-weight:bold; color:#333; font-size:90%;}
+      input[type=submit] {margin-left:105px; font-size:120%; font-weight:bold;}
+    }
+    a.show_field {margin-left:105px;}
+    
+    #new_metric_button {float:right;}
+    .nested_metric_form {border:1px solid $light_blue_box_border; padding:5px; margin:5px 0; background-color:#fff;
+      label {width:95px;}
+      textarea {margin:10px 0 10px 20px;}
+    }
+  }
+
+  &.show {
+    p.description { font-size:90%; color:#555;}
+  }
+}

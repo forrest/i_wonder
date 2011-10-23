@@ -5,7 +5,8 @@ module IWonder
       validates_length_of :name, :within => 1..250
       validates_uniqueness_of :name, :message => "must be unique"
 
-      has_many :metrics, :through => :report_membership
+      has_many :report_memberships
+      has_many :metrics, :through => :report_memberships
 
       def clean_min_start
         (min_start.present? ? min_start : Time.zone.now).strftime("%Y/%m/%d")

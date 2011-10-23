@@ -1,0 +1,20 @@
+<div id="iw_wonder_wrapper" class="how">
+	<h1>I wonder <%= @report.name%> </h1>
+
+	<p class="description">
+		<%= @report.description.present? ? @report.description : "no description..."%>
+	</p>
+	
+	<p>
+		Tracks: <%= @report.metrics.collect(&:name).join(", ") %>
+	</p>
+	
+	
+	<p>
+		<%= link_to "< Back to index", url_for(:action => :index) %>
+		|
+		<%= link_to "Edit", url_for(:action => :edit, :id => @report.id) %>
+		|
+		<%= link_to "Delete", url_for(:action => :destroy, :id => @report.id), :method => :delete, :confirm => "Are you sure?" %>
+	</p>
+</div>

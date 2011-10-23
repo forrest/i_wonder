@@ -1,4 +1,4 @@
-require File.expand_path("../../test_helper.rb", File.dirname(__FILE__))
+require File.expand_path("../test_helper.rb", File.dirname(__FILE__))
 
 class ConfigurationTest < ActiveSupport::TestCase
   test "did the initializer get loaded" do

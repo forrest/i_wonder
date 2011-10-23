@@ -1,0 +1,36 @@
+<%= form_for @report, :url => url_for(:action => (@report.new_record? ? :create : :update)) do |f| %>
+	<% if @report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@report.errors.count, "error") %> prohibited this blah from being saved:</h2>
+
+      <ul>
+      <% @report.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	
+	<h3>Details</h3>
+	<div class="field">
+		<%= f.label :name, "I wonder" %>
+		<%= f.text_field :name, :placeholder => "report name as a question...", :size => 50 %>
+	</div>
+	
+	<div class="field">
+		<%= f.label :description %>
+		<%= f.text_area :description, :rows => 3, :cols => 50%>
+	</div>
+	
+	<div class="field">
+		<%= f.label :report_type %>
+		<%= f.select :report_type, {"Line" => {:value => "Line"}, "Bar" => {:disabled => true}, "AB Test" => {:disabled => true}} %>
+	</div>
+	
+	
+	<div class="field">
+		<%= f.submit %>
+	</div>
+	
+	
+<% end %>

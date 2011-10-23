@@ -2,23 +2,17 @@ class IWonderMigrations < ActiveRecord::Migration
   def change
     create_table :i_wonder_events do |t|
       t.string :event_type
-      
       t.integer :account_id # not always applicable
-      t.integer :user_id
+      t.integer :user_id # not always applicable
       t.string :session_id
-
       t.string :controller
       t.string :action
-      
       t.string :remote_ip
       t.string :user_agent
       t.string :referrer
-      
       t.text :extra_details
-
       t.timestamps
     end
-    
     add_index :i_wonder_events, :event_type
     add_index :i_wonder_events, :account_id
     add_index :i_wonder_events, :user_id
@@ -33,11 +27,11 @@ class IWonderMigrations < ActiveRecord::Migration
     end
     
     create_table :i_wonder_report_memberships do |t|
-      t.integer :i_wonder_report_id
-      t.integer :i_wonder_metric_id
+      t.integer :report_id
+      t.integer :metric_id
     end
-    add_index :i_wonder_report_memberships, :i_wonder_report_id
-    add_index :i_wonder_report_memberships, :i_wonder_metric_id
+    add_index :i_wonder_report_memberships, :report_id
+    add_index :i_wonder_report_memberships, :metric_id
     
     
     # used for line and pie charts
@@ -49,7 +43,7 @@ class IWonderMigrations < ActiveRecord::Migration
     end
     
     create_table :i_wonder_snapshots do |t|
-      t.integer :i_wonder_metric_id
+      t.integer :metric_id
       t.integer :count
       t.text :complex_data
       t.timestamps

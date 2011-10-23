@@ -41,12 +41,12 @@ ActiveRecord::Schema.define(:version => 20111022230720) do
   end
 
   create_table "i_wonder_report_memberships", :force => true do |t|
-    t.integer "i_wonder_report_id"
-    t.integer "i_wonder_metric_id"
+    t.integer "report_id"
+    t.integer "metric_id"
   end
 
-  add_index "i_wonder_report_memberships", ["i_wonder_metric_id"], :name => "index_i_wonder_report_memberships_on_i_wonder_metric_id"
-  add_index "i_wonder_report_memberships", ["i_wonder_report_id"], :name => "index_i_wonder_report_memberships_on_i_wonder_report_id"
+  add_index "i_wonder_report_memberships", ["metric_id"], :name => "index_i_wonder_report_memberships_on_metric_id"
+  add_index "i_wonder_report_memberships", ["report_id"], :name => "index_i_wonder_report_memberships_on_report_id"
 
   create_table "i_wonder_reports", :force => true do |t|
     t.string   "name"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 20111022230720) do
   end
 
   create_table "i_wonder_snapshots", :force => true do |t|
-    t.integer  "i_wonder_metric_id"
+    t.integer  "metric_id"
     t.integer  "count"
     t.text     "complex_data"
     t.datetime "created_at"

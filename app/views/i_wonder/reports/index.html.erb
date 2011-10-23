@@ -1,0 +1,22 @@
+<div id="i_wonder_wrapper">
+	<h1>Reports & Test</h1>
+
+	<% if @reports.empty? %>
+		<p class="empty_list">You don't have any reports</p>
+	<% else %>
+		<ul id="report_list">
+			<% for report in @reports do %>
+				<li>
+					<%= link_to url_for(:action => :show, :id => report.id) do %>
+						<h3><span>I wonder</span> <%= report.name %></h3>
+						<p><%= report.description %></p>
+					<% end %>
+				</li>
+			<% end %>
+		</ul>
+	<% end %>
+
+	<p>
+		<%= button_to "Create a new report", url_for(:action => :new), :method => :get%>
+	</p>
+</div>
