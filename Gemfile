@@ -6,3 +6,4 @@ source "http://rubygems.org"
 gemspec
 
 gem "jquery-rails"
+gem "delayed_job"

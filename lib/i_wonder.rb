@@ -4,6 +4,7 @@ require "i_wonder/configuration"
 
 module IWonder
   
+  # These are all things used just for logging events
   module Logging
     ENV_KEY = COOKIE_KEY = "i_wonder"
     SESSION_KEY_NAME = "_session_id"

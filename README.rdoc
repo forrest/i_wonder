@@ -68,7 +68,25 @@ This Gem requires the Delayed::Job gem. Installation and configuration instructi
 
 We also require the highcharts javascript file in your applications asset path. We don't include it because of licencing reasons. It's free for testing and development. You can find it at http://www.highcharts.com/
 
-  
+
+=== Security
+
+IWonder's controllers will run any before filters you have set in your application controller. You can easily check for a password or admin status there.
+
+=== Options & Configurations
+
+You can choose to navigate directly to the dashboard. If you want to include a link on your admin page to the i_wonder dashboard, your can access the url with <code>i_wonder.root_url</code> such as:
+
+  <%= link_to "Go to analytics >", i_wonder.root_url %>
+
+
+If you want to configure this gem, add this to an initializer.
+
+  IWonder.configuration do |c|
+    c.controllers_to_ignore = [:admin]   # These are all the controllers which don't log any events
+  end
+
+
 == Usage
 
 === Event tracking
@@ -88,23 +106,14 @@ You can also log an event from a model with the same method <code>report!(event_
 or <code>:account_id</code> in the options, if you want them recorded.
   
   
-=== Generating Reports
-
-
-
-
-
-== Configuration
-
-If you want to configure this gem, add this to an initializer
-
-  IWonder.configuration do |c|
-    c.controllers_to_ignore = [:admin]   # These are all the controllers which don't log any events
-  end
-  
-
 == Contributing & Reporting Issues
 
+In progress...
+
+
+== Licensing
+
+This application is released under the MIT license. However, in the dummy app for testing purposes, it contains the Highcharts javascript library (highcharts.com). It is deployed under the "Creative Commons Attribution-NonCommercial 3.0 License". It is free for testing and development, but not for commercial use. Please see the details at http://highcharts.com/license
 
 ---
 

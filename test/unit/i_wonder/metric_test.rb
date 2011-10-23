@@ -11,6 +11,7 @@ module IWonder
       @m4 = Factory(:metric, :frequency => 1.day, :last_measurement => Time.now - 90.minutes)
       @m5 = Factory(:metric, :frequency => 1.day, :last_measurement => Time.now - 2.days)
       @m6 = Factory(:metric, :frequency => -1, :last_measurement => nil)
+      @m7 = Factory(:metric, :frequency => 1.hour, :last_measurement => nil, :archived => true)
 
 
       assert_equal 3, IWonder::Metric.needs_to_be_measured.count

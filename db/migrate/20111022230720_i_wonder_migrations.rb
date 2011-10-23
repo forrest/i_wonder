@@ -38,7 +38,10 @@ class IWonderMigrations < ActiveRecord::Migration
     create_table :i_wonder_metrics do |t|
       t.string :name
       t.text :collection_method
+      t.boolean :archived
+      
       t.integer :frequency # -1 means that it calculates on demand
+      t.timestamp :earliest_measurement
       t.timestamp :last_measurement
     end
     

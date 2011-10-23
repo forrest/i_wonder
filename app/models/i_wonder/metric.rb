@@ -10,7 +10,10 @@ module IWonder
 
     DANGEROUS_WORDS = /(save|update|create|destroy|delete)/
 
-    scope :needs_to_be_measured, where("i_wonder_metrics.frequency > 0 AND (i_wonder_metrics.last_measurement IS NULL OR i_wonder_metrics.last_measurement+(i_wonder_metrics.frequency * interval '1 second') < NOW())")
+    scope :archived, where(:archived => true)
+    scope :active, where(:archived => false)
+    scope :takes_snapshots, where("frequency > 0")
+    scope :needs_to_be_measured, active.takes_snapshots.where("last_measurement IS NULL OR last_measurement+(frequency * interval '1 second') < NOW()")
 
     validate :avoid_dangerous_words
     def avoid_dangerous_words
@@ -36,7 +39,7 @@ module IWonder
           metric.snapshots.create(:data => @resulting_data)
         }
       end
-      # handle_asynchronously :take_measure
+      handle_asynchronously :take_measure
     end
   end
 end

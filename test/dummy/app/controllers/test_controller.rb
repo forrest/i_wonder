@@ -1,6 +1,9 @@
 class TestController < ApplicationController
   before_filter :set_user_and_admin, :except => :test_without_login
   
+  def landing
+  end
+  
   def test_without_report
     render :nothing => true
   end

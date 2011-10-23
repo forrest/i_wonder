@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   
 
   mount IWonder::Engine => "/i_wonder"
+  
+  root :to => "test#landing"
 end
