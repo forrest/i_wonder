@@ -55,6 +55,29 @@ class MiddlewareTest < ActionDispatch::IntegrationTest
     assert_equal 0, IWonder::Event.count
   end
   
+  test "ignores non-200 status with default configuration" do
+    IWonder::Event.destroy_all
+    get "/test_redirect"
+    assert_response 302
+    assert_equal 0, IWonder::Event.count
+  end
+  
+  test "logges non-200 status with custom configuration" do
+    IWonder::Event.destroy_all
+    
+    IWonder.configure do |c|
+      c.only_log_hits_on_200 = false
+    end
+    
+    get "/test_redirect"
+    assert_response 302
+    assert_equal 2, IWonder::Event.count
+    
+    IWonder.configure do |c|
+      c.only_log_hits_on_200 = true
+    end
+  end
+  
   test "ignores controller in do_no_log list" do
     pending
   end

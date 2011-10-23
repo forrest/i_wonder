@@ -1,4 +1,6 @@
 module IWonder
+  ALWAYS_AVOID_CONTROLLERS = ["i_wonder/dashboard", "i_wonder/reports", "i_wonder/metrics", "i_wonder/events"]
+  
   def self.configuration
      @configuration ||= Configuration.new
    end
@@ -8,17 +10,19 @@ module IWonder
    end
   
   class Configuration
-    attr_accessor :keep_hits_for
+    attr_accessor :keep_hits_for, :only_log_hits_on_200
     attr_reader :controllers_to_ignore
     
     def initialize
       @keep_hits_for = 2.weeks
       @controllers_to_ignore = []
+      @only_log_hits_on_200 = true
     end
     
     def controllers_to_ignore=(controllers)
-      @controllers = [controllers] unless controllers.is_a?(Array)
-      @controllers = @controllers.collect(&:to_sym)
+      @new_controllers = [controllers] unless controllers.is_a?(Array)
+      @controllers = ALWAYS_AVOID_CONTROLLERS + @new_controllers.collect(&:to_s)
+      @controllers = @controllers.flatten.uniq
     end
     
   end

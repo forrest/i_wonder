@@ -18,6 +18,10 @@ class TestController < ApplicationController
     render :nothing => true
   end
   
+  def test_redirect
+    redirect_to "test_without_login"
+  end
+  
   protected
   
   def set_user_and_admin

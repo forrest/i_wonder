@@ -51,7 +51,9 @@ ActiveRecord::Schema.define(:version => 20111023024745) do
   create_table "i_wonder_metrics", :force => true do |t|
     t.string   "name"
     t.text     "collection_method"
+    t.boolean  "archived"
     t.integer  "frequency"
+    t.datetime "earliest_measurement"
     t.datetime "last_measurement"
   end
 

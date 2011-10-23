@@ -84,6 +84,7 @@ If you want to configure this gem, add this to an initializer.
 
   IWonder.configuration do |c|
     c.controllers_to_ignore = [:admin]   # These are all the controllers which don't log any events
+    c.only_log_hits_on_200 = false   # By default hits and new visitors won't be logged on anything but a 200. Your custom events will still be recorded.
   end
 
 

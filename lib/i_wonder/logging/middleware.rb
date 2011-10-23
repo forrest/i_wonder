@@ -12,7 +12,7 @@ module IWonder
         env[ENV_KEY] = {}
         @status, @headers, @response = @app.call(env)
         
-        if should_be_logged?(env)
+        if should_log_anything?(env)
           
           unless env['User-Agent'] =~ BOT_REGEX
             env["rack.session"] ||= {}
@@ -34,14 +34,19 @@ module IWonder
       
       def log_hit(env)
         env[ENV_KEY]["new_events"] ||= []
-        env[ENV_KEY]["new_events"] << {:event_type => :hit}
+        
+        if should_log_hit_or_new_visitor?
+          env[ENV_KEY]["new_events"] << {:event_type => :hit}
+        end
       end
       
       def check_for_new_visitor(env)
         if cookies(env)[COOKIE_KEY+SESSION_KEY_NAME].blank?
           cookies(env).permanent[COOKIE_KEY+SESSION_KEY_NAME] = SecureRandom.hex(10)
           env[ENV_KEY]["new_events"] ||= []
-          env[ENV_KEY]["new_events"] << {:event_type => :new_visitor}
+          if should_log_hit_or_new_visitor?
+            env[ENV_KEY]["new_events"] << {:event_type => :new_visitor}
+          end
         end
       end
       
@@ -96,8 +101,12 @@ module IWonder
         env["action_dispatch.request.parameters"] and env["action_dispatch.request.parameters"][:controller]
       end
       
-      def should_be_logged?(env)
+      def should_log_anything?(env)
         controller(env) and !IWonder.configuration.controllers_to_ignore.include?(controller(env))
+      end
+      
+      def should_log_hit_or_new_visitor?
+        @status==200 or !IWonder.configuration.only_log_hits_on_200
       end
       
     end
