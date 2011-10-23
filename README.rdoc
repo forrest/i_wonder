@@ -8,22 +8,16 @@ Note: Must be used with an SQL style DB currently.
 
 ==== Install the Gem
 
-In your <code>Gemfile</code>:
+Add to your <code>Gemfile</code> and run <code>bundler</code>:
 
   gem "i_wonder"
-
-Then install the gem with:
-  
   bundle install
   
 ==== Migrate the DB
 
-Create the db migration:
+Generate the migration files and migrate your database:
 
   rake i_wonder:install:migrations
-  
-And migrate your database:
-
   rake db:migrate
 
 
@@ -33,7 +27,7 @@ Add the engine to your routes. This is where the dashboard will be hosted
 
   Rails.application.routes.draw do
     ...
-    mount IWonder::Engine => "/i_wonder"
+    mount IWonder::Engine => "/super_awesome_admin_reports"
   end
 
 
@@ -80,7 +74,7 @@ or <code>:account_id</code> in the options, if you want them recorded.
 If you want to configure this gem, add this to an initializer
 
   IWonder.configuration do |c|
-    c.controllers_to_ignore = [:admin]
+    c.controllers_to_ignore = [:admin]   # These are all the controllers which don't log any events
   end
   
 
