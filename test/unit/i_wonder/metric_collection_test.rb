@@ -41,7 +41,6 @@ module IWonder
     end
 
     test "grabbing most recent snapshot and calculating time range" do
-      
       Timecop.freeze(2012, 10, 24) do
       
         @metric_1 = Factory(:metric, :frequency => 1.day)
@@ -58,6 +57,47 @@ module IWonder
       end
     end
     
+    test "grabbing values from snapshots in timerange (integers)" do
+      Timecop.freeze(2012, 10, 24) do      
+        @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => 1.day)
+        @snapshot_1 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 5.days, :data => 1)
+        @snapshot_2 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 4.days, :data => 2)
+        @snapshot_3 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 3.days, :data => 3)
+        @snapshot_4 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 2.days, :data => 4)
+        @snapshot_5 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :data => 5)
+        
+        
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        assert res.eql?({"Test Metric" => 9})
+      end
+    end
+    
+    test "grabbing values from snapshots in timerange (hashes)" do
+      Timecop.freeze(2012, 10, 24) do      
+        @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => 1.day)
+        @snapshot_1 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 5.days, :count => nil, :data => {"key_1" => 1})
+        @snapshot_2 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 4.days, :count => nil, :data => {"key_1" => 2})
+        @snapshot_3 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 3.days, :count => nil, :data => {"key_1" => 3, "key_2" => 1})
+        @snapshot_4 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 2.days, :count => nil, :data => {"key_1" => 4, "key_2" => 2})
+        @snapshot_5 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :count => nil, :data => {"key_1" => 5, "key_2" => 3})
+        
+        
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        assert res.eql?({"key_1" => 9, "key_2" => 3})
+      end
+    end
+    
+    test "grabbing values from no-snapshot collection_method" do
+      Timecop.freeze(2012, 10, 24) do      
+        @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => -1, :collection_method => "3")
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        assert res.eql?({"Test Metric" => 3})
+      end
+    end
+    
+    test "mergin snapshot methods (sumation vs averaging)" do
+      pending
+    end
 
   end
 end

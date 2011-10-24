@@ -101,13 +101,12 @@ module IWonder
     # returns a hash with all the key values between the two times. If it has been collecting integers, the key will be the name of the metric
     def value_from(start_time, end_time)
       if takes_snapshots?
-        data = self.snapshots.where("created_at >= ? and created_at < ?", start_time, end_time).collect(&:data)
+        data = self.snapshots.where("created_at >= ? and created_at <= ?", start_time, end_time).collect(&:data)
       else
-        data = [self.grab_values_from(start_time, end_time)]
+        data = [self.run_collection_method_from(start_time, end_time)]
       end
       
       # at this point we have an array of hashs or integers
-      
       array_of_hashes = data.collect{|d| 
         d.is_a?(Hash) ? d.stringify_keys! : {self.name => d}
       }
@@ -125,7 +124,7 @@ module IWonder
       return final_hash
     end
     
-    def grab_values_from(start_time, end_time)
+    def run_collection_method_from(start_time, end_time)
       @resulting_data = nil
       transaction do
         @resulting_data = eval(collection_method)
@@ -142,7 +141,7 @@ module IWonder
 
     def take_snapshot
       start_time, end_time = timeframe_for_next_snapshot
-      self.snapshots.create(:data => grab_values_from(start_time, end_time))
+      self.snapshots.create(:data => run_collection_method_from(start_time, end_time))
     end
     
     def timeframe_for_next_snapshot
