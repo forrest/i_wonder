@@ -3,8 +3,9 @@ module IWonder
     attr_accessible :name, :frequency, :active, :collection_method
 
     serialize :options, Hash
-    attr_accessible :event_counter_event, :collection_type
+    attr_accessible :event_counter_event, :collection_type, :combination_rule
     hash_accessor :options, :collection_type, :default => "event_counter"
+    hash_accessor :options, :combination_rule, :default => "sum" # sum or average
     hash_accessor :options, :event_counter_event
         
     attr_accessible :model_counter_class, :model_counter_scopes, :model_counter_takes_snapshots, :model_counter_frequency
@@ -12,11 +13,11 @@ module IWonder
     hash_accessor :options, :model_counter_scopes
     # hash_accessor :options, :takes_snapshots, :type => :boolean, :default => true
     
-    attr_accessible :custom_collection_method, :custom_takes_snapshots, :custom_frequency, :combination_rule
+    attr_accessible :custom_collection_method, :custom_takes_snapshots, :custom_frequency
     hash_accessor :options, :custom_collection_method
     hash_accessor :options, :custom_takes_snapshots, :type => :boolean, :default => true
     hash_accessor :options, :custom_frequency
-    hash_accessor :options, :combination_rule, :default => "sum" # sum or average
+    
     
 
     has_many :report_memberships
@@ -117,9 +118,15 @@ module IWonder
       final_hash = {}
       array_of_hashes.each{|hash|
         hash.each{|key, value|
-          final_hash[key] = (final_hash[key] || 0) + value.to_i
+          final_hash[key] = (final_hash[key] || 0.0) + value.to_f
         }
       }
+      
+      if combination_rule == "average" # we have to now divide by the number of snapshots we added together
+        final_hash.each{|key, value|
+          final_hash[key] = final_hash[key] / array_of_hashes.length.to_f
+        }
+      end
       
       return final_hash
     end

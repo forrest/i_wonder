@@ -68,7 +68,7 @@ module IWonder
         
         
         res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
-        assert res.eql?({"Test Metric" => 9})
+        assert res.eql?({"Test Metric" => 9.0})
       end
     end
     
@@ -83,7 +83,7 @@ module IWonder
         
         
         res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
-        assert res.eql?({"key_1" => 9, "key_2" => 3})
+        assert res.eql?({"key_1" => 9.0, "key_2" => 3.0})
       end
     end
     
@@ -91,12 +91,29 @@ module IWonder
       Timecop.freeze(2012, 10, 24) do      
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => -1, :collection_method => "3")
         res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
-        assert res.eql?({"Test Metric" => 3})
+        assert res.eql?({"Test Metric" => 3.0})
       end
     end
     
     test "mergin snapshot methods (sumation vs averaging)" do
-      pending
+      
+      Timecop.freeze(2012, 10, 24) do      
+        # with the default summation set
+        @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => 1.day)
+        @snapshot_1 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 2.days, :data => 1)
+        @snapshot_2 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :data => 3)
+        res = @metric_1.value_from(Time.zone.now - 2.days, Time.zone.now - 1.day)
+        assert res.eql?({"Test Metric" => 4.0})
+
+        # with the default summation set
+        @metric_1.combination_rule = "average"
+        @metric_1.save
+      
+        @snapshot_1 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 2.days, :data => 1)
+        @snapshot_2 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :data => 3)
+        res = @metric_1.value_from(Time.zone.now - 2.days, Time.zone.now)
+        assert res.eql?({"Test Metric" => 2.0})
+      end
     end
 
   end
