@@ -7,6 +7,7 @@ FactoryGirl.define do
     name { Factory.next(:metric_name) }
     collection_method ""
     frequency 1.day
+    collection_type "custom"
   end
 
 end

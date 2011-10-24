@@ -9,13 +9,6 @@ module IWonder
     has_many :metrics, :through => :report_memberships
     accepts_nested_attributes_for :report_memberships, :allow_destroy => true
 
-    validate :must_have_some_metrics
-    def must_have_some_metrics
-      if self.report_memberships.empty?
-        errors.add(:metrics, "can't be blank.")
-      end
-    end
-
     def line?
       report_type =~ /line/i
     end
