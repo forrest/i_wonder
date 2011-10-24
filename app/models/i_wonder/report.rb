@@ -69,7 +69,6 @@ module IWonder
         time_iterator += interval_length
       end while time_iterator <= end_time
 
-
       # set the value to zero for any
       master_hashes_array.each{|hash_for_slice_of_time|
         keys_list.each{|key|

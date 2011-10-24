@@ -3,21 +3,16 @@ module IWonder
     attr_accessible :name, :frequency, :active, :collection_method
 
     serialize :options, Hash
-    attr_accessible :event_counter_event, :collection_type, :combination_rule
+    attr_accessible :collection_type, :combination_rule, :takes_snapshots
     hash_accessor :options, :collection_type, :default => "event_counter"
     hash_accessor :options, :combination_rule, :default => "sum" # sum or average
-    hash_accessor :options, :event_counter_event
+    
+    hash_accessor :options, :takes_snapshots, :type => :boolean, :default => true
         
-    attr_accessible :model_counter_class, :model_counter_scopes, :model_counter_takes_snapshots, :model_counter_frequency
+    attr_accessible :event_counter_event, :model_counter_class, :model_counter_scopes, :model_counter_takes_snapshots, :model_counter_frequency
+    hash_accessor :options, :event_counter_event
     hash_accessor :options, :model_counter_class
     hash_accessor :options, :model_counter_scopes
-    # hash_accessor :options, :takes_snapshots, :type => :boolean, :default => true
-    
-    attr_accessible :custom_collection_method, :custom_takes_snapshots, :custom_frequency
-    hash_accessor :options, :custom_collection_method
-    hash_accessor :options, :custom_takes_snapshots, :type => :boolean, :default => true
-    hash_accessor :options, :custom_frequency
-    
     
 
     has_many :report_memberships
@@ -102,7 +97,7 @@ module IWonder
     # returns a hash with all the key values between the two times. If it has been collecting integers, the key will be the name of the metric
     def value_from(start_time, end_time)
       if takes_snapshots?
-        data = self.snapshots.where("created_at >= ? and created_at <= ?", start_time, end_time).collect(&:data)
+        data = self.snapshots.where("created_at >= ? and created_at < ?", start_time, end_time).collect(&:data)
       else
         data = [self.run_collection_method_from(start_time, end_time)]
       end

@@ -67,7 +67,7 @@ module IWonder
         @snapshot_5 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :data => 5)
         
         
-        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days + 1.second)
         assert res.eql?({"Test Metric" => 9.0})
       end
     end
@@ -82,7 +82,7 @@ module IWonder
         @snapshot_5 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :count => nil, :data => {"key_1" => 5, "key_2" => 3})
         
         
-        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days + 1.second)
         assert res.eql?({"key_1" => 9.0, "key_2" => 3.0})
       end
     end
@@ -90,19 +90,19 @@ module IWonder
     test "grabbing values from no-snapshot collection_method" do
       Timecop.freeze(2012, 10, 24) do      
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => -1, :collection_method => "3")
-        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days)
+        res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days + 1.second)
         assert res.eql?({"Test Metric" => 3.0})
       end
     end
     
-    test "mergin snapshot methods (sumation vs averaging)" do
+    test "merging snapshot methods (sumation vs averaging)" do
       
       Timecop.freeze(2012, 10, 24) do      
         # with the default summation set
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => 1.day)
         @snapshot_1 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 2.days, :data => 1)
         @snapshot_2 = Factory(:snapshot, :metric => @metric_1, :created_at => Time.zone.now - 1.days, :data => 3)
-        res = @metric_1.value_from(Time.zone.now - 2.days, Time.zone.now - 1.day)
+        res = @metric_1.value_from(Time.zone.now - 2.days, Time.zone.now - 1.day + 1.second)
         assert res.eql?({"Test Metric" => 4.0})
 
         # with the default summation set
