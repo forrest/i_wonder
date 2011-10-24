@@ -1,0 +1,38 @@
+<div id="iw_chart_container"></div>
+
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+	  <%
+	  options ||= {}
+	  options[:chart] ||= {}
+	  options[:chart][:renderTo] = "iw_chart_container";
+	
+		options[:title] ||= { :text => "I wonder "+@report.name }
+	
+		options[:series] = @report.collect_series_data(@start_time, @end_time, @interval_length);
+		
+	  # options[:chart][:defaultSeriesType] = 
+	  # 
+	  options[:credits] = false
+	  # 
+	  options[:xAxis] = {}
+	  # new_options[:xAxis][:categories] = options[:x_axis_categories]
+	  options[:xAxis][:dateTimeLabelFormats] ||= { :day => '%b %e', :hour => '%b %e' }
+	  options[:xAxis][:type] ||= 'datetime'
+	  # 
+	  # new_options[:series] = options[:series]
+	  # 
+	  # new_options[:yAxis] = (options[:yAxis] || {})
+	  # new_options[:yAxis][:allow_decimals] = (options[:y_axis_allow_decimals] ? 'true' : 'false')
+	  # new_options[:yAxis][:min] = (options[:y_axis_min] || 0)
+	  # new_options[:yAxis][:title] = { :text => options[:y_axis_title] } if options[:y_axis_title].present?
+	  # 
+	  # new_options[:legend] = (options[:legend] || { :enabled => false })
+	  # 
+
+	  # 
+	  # new_options[:tooltip] = options[:tooltip] if options[:tooltip].present?
+	  %>
+		var chart = new Highcharts.Chart(<%= raw options.to_json %>);
+	});
+</script>

@@ -106,7 +106,7 @@ module IWonder
       end
       
       def should_log_hit_or_new_visitor?
-        @status==200 or !IWonder.configuration.only_log_hits_on_200
+        [200, 304].include?(@status) or !IWonder.configuration.only_log_hits_on_200
       end
       
     end

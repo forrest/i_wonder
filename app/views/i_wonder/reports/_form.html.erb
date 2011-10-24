@@ -1,4 +1,4 @@
-<%= form_for @report do |f| %>
+<%= form_for @report, :html => {:class => "main_form report"} do |f| %>
 	<% if @report.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
@@ -26,6 +26,19 @@
 		<%= f.select :report_type, {"Line" => {:value => "Line"}, "Bar" => {:disabled => true}, "AB Test" => {:disabled => true}} %>
 	</div>
 	
+	<hr/>
+	
+	<h4>Tracks these metrics</h4>
+	<ul class="report_metric_ids">
+		<% for metric in IWonder::Metric.active.order(:name) do %>
+			<li>
+				<%= check_box_tag "report[metric_ids][]", metric.id, @report.metrics.include?(metric) %>
+				<%= label_tag "report[metric_ids][]", metric.name %>
+			</li>
+		<% end %>
+	</ul>
+	
+	<hr/>
 	
 	<div class="field">
 		<%= f.submit %>

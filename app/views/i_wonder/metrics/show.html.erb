@@ -1,5 +1,23 @@
 <div id="i_wonder_wrapper" class="show">
-	<h1><%= @metric.name%> </h1>
+	<h1><%= @metric.name%></h1>
+	
+	<% if @metric.collection_type =~ /event_counter/ %>
+		<p>
+			This metric tracks the number of occurrences of the <b><%= @metric.event_counter_event %></b> event. There is no need to take snapshots with events. Any timeframe from the first time this event was recorded is available.
+		</p>
+	<% elsif @metric.model_counter_type? %>
+		<p>
+			This metric tracks the number of <b><%= @metric.model_counter_class %></b> models<% if @metric.model_counter_scopes.present? %> with the scope of <b><%= @metric.model_counter_scopes %></b><% end %>.
+		</p>
+	<% elsif @metric.custom_type? %>
+		<p>
+			This is a custom metric. <% if @metric.takes_snapshots? %> It calculates the following code every <%= @metric.frequency %> seconds. <% end %>
+		</p>
+		
+		<pre><%= @metric.collection_method %></pre>
+		
+	<% end %>
+	
 	
 	<p>
 		<%= link_to "< Back to index", metrics_path %>

@@ -8,6 +8,10 @@ module IWonder
 
     def show
       @report = Report.find(params[:id])
+      
+      @start_time = Time.zone.now - 30.hours #(params[:start_time] || @report.default_start_time)
+      @end_time = (params[:end_time] || Time.zone.now)
+      @interval_length = 1.hour
     end
 
     def new

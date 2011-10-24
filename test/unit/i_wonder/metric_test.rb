@@ -3,6 +3,8 @@ require File.expand_path("../../test_helper.rb", File.dirname(__FILE__))
 module IWonder
   class MetricTest < ActiveSupport::TestCase
 
+    # Collection Methods =============================================
+
     test "Checking the scope for metrics requiring updates" do
       IWonder::Metric.delete_all
       @m1 = Factory(:metric, :frequency => 1.hour, :last_measurement => nil)
@@ -49,6 +51,17 @@ module IWonder
       assert IWonder::Report.exists?(@report.id)
       assert_equal 1, @metric.snapshots.count
     end
+
+    # Creation Methods ===============================================
+    
+    test "model scope only works for actual models" do
+      pending
+    end
+    
+    test "model scope doesn't accept invalid scopes for that model" do
+      pending
+    end
+    
 
   end
 end

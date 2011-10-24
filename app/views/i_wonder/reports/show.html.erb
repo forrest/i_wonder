@@ -1,15 +1,4 @@
 <div id="i_wonder_wrapper" class="show">
-	<h1>I wonder <%= @report.name%> </h1>
-
-	<p class="description">
-		<%= @report.description.present? ? @report.description : "no description..."%>
-	</p>
-	
-	<p>
-		Tracks: <%= @report.metrics.collect(&:name).join(", ") %>
-	</p>
-	
-	
 	<p>
 		<%= link_to "< Back to index", url_for(:action => :index) %>
 		|
@@ -17,4 +6,14 @@
 		|
 		<%= link_to "Delete", url_for(:action => :destroy, :id => @report.id), :method => :delete, :confirm => "Are you sure?" %>
 	</p>
+	
+	<% if @report.line? %>
+		<%= render "line_report" %>
+	<% end %>
+	
+	<p class="description">
+		<%= @report.description.present? ? @report.description : "no description..."%>
+	</p>
+	
+	
 </div>

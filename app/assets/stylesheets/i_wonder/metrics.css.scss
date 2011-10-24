@@ -4,3 +4,6 @@
 */
 
 @import "_shared.css.scss";
+
+
+pre { padding: 20px; border:1px solid $light_blue_box_border; background-color:$light_blue_box_background; text-align:left; display:inline-block;}
