@@ -1,3 +1,7 @@
 
-$light_blue_box_background:#F8F8F8;
-$light_blue_box_border:#E9E9E9;
+$light_blue_box_background: #F8F8F8;
+$light_blue_box_border: #E9E9E9;
+$dark_red: #af0000;
+$pale_red: #ffd2d2;
+
+@mixin rounded_corners($radius: 5px) { -moz-border-radius: $radius; -webkit-border-radius: $radius; border-radius: $radius; position:relative;}

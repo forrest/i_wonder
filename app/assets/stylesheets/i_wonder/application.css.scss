@@ -11,6 +11,26 @@
 
 @import "_shared.css.scss";
 
+html, body {
+  background-color: #4B7399;
+  font-family: Verdana, Helvetica, Arial;
+  font-size: 14px;
+}
+
+#container {
+  width: 75%;
+  margin: 0 auto;
+  background-color: #FFF;
+  padding: 20px 40px;
+  border: solid 1px black;
+  margin-top: 20px;
+}
+
+.flash { padding: 5px 8px; margin: 10px 0; @include rounded_corners(3px);}
+.flash_notice { background-color: #CFC; border: solid 1px #6C6; }
+.flash_warning { background-color: #FFFFE0; border: solid 1px #ffa500; }
+.flash_error, .flash_alert { background-color:$pale_red; border: solid 1px$dark_red; }
+
 #i_wonder_wrapper {
   p.empty_list {color:#666; }
 

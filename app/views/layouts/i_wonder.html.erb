@@ -1,6 +1,17 @@
-<% content_for :extra_scripts_and_styles do %>
-  <%= stylesheet_link_tag("i_wonder/application") %>
-	<%= javascript_include_tag("i_wonder/application") %>
-<% end -%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>I Wonder</title>
+		<%= stylesheet_link_tag("i_wonder/application") %>
+		<%= javascript_include_tag("i_wonder/application") %>
+	</head>
+	<body>
+		<div id="container">
+			<% flash.each do |name, msg| %>
+	      <%= content_tag :div, msg, :class => "flash flash_#{name} clearfix" %>
+	    <% end %>
 
-<%= render :file => 'layouts/application' %>
+			<%= yield %>
+		</div>
+	</body>
+</html>
