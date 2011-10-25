@@ -97,6 +97,7 @@ module IWonder
       self.collection_type == "custom"
     end
     
+    # TODO: some safegaurds need to be added for editing metrics that are already running.
     def locked?
       snapshots.count > 0
     end
@@ -135,7 +136,7 @@ module IWonder
 
     class << self
       def take_snapshots
-        needs_to_be_measured.find_each(&:take_measurement)
+        needs_to_be_measured.find_each(&:take_snapshot)
       end
       # handle_asynchronously :take_snapshots
     end
@@ -171,6 +172,16 @@ module IWonder
       
       return final_hash
     end
+
+    #TODO: some code to avoid overlap in snapshots needs to be added
+    def take_snapshot
+      start_time, end_time = timeframe_for_next_snapshot
+      self.snapshots.create(:data => run_collection_method_from(start_time, end_time))
+      
+      if self.earliest_measurement.nil?
+        self.update_attribute(:earliest_measurement, start_time)
+      end
+    end
     
     
   private
@@ -190,15 +201,6 @@ module IWonder
       return @resulting_data
     end
 
-    def take_snapshot
-      start_time, end_time = timeframe_for_next_snapshot
-      self.snapshots.create(:data => run_collection_method_from(start_time, end_time))
-      
-      if self.earliest_measurement.nil?
-        self.update_attribute(:earliest_measurement, start_time)
-      end
-    end
-    
     def timeframe_for_next_snapshot
       recent = self.snapshots.most_recent
       if recent.present?
