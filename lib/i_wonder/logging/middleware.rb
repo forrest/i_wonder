@@ -36,16 +36,16 @@ module IWonder
         env[ENV_KEY]["new_events"] ||= []
         
         if should_log_hit_or_new_visitor?
-          env[ENV_KEY]["new_events"] << {:event_type => :hit}
+          env[ENV_KEY]["new_events"] << {:event_type => "hit"}
         end
       end
       
       def check_for_new_visitor(env)
         if cookies(env)[COOKIE_KEY+SESSION_KEY_NAME].blank?
-          cookies(env).permanent[COOKIE_KEY+SESSION_KEY_NAME] = SecureRandom.hex(10)
+          cookies(env).permanent[COOKIE_KEY+SESSION_KEY_NAME] = SecureRandom.hex(10) # this should swithc to something actually unique
           env[ENV_KEY]["new_events"] ||= []
           if should_log_hit_or_new_visitor?
-            env[ENV_KEY]["new_events"] << {:event_type => :new_visitor}
+            env[ENV_KEY]["new_events"] << {:event_type => "new_visitor"}
           end
         end
       end
@@ -62,7 +62,8 @@ module IWonder
         if env[ENV_KEY]["user_id"] # if there is a user
           if cookies(env)[COOKIE_KEY+NO_USER_KEY].present? # if there wasn't a user last hit
             if cookies(env)[COOKIE_KEY+SESSION_KEY_NAME].present? # There should always be a session key, but better to check
-              IWonder::Event.merge_session_to_user(cookies(env)[COOKIE_KEY+SESSION_KEY_NAME], env[ENV_KEY]["user_id"])
+              users_original_session_id = IWonder::Event.merge_session_to_user(cookies(env)[COOKIE_KEY+SESSION_KEY_NAME], env[ENV_KEY]["user_id"])
+              cookies(env).permanent[COOKIE_KEY+SESSION_KEY_NAME] = users_original_session_id
             end
             cookies(env)[COOKIE_KEY+NO_USER_KEY] = nil
             cookies(env).delete(COOKIE_KEY+NO_USER_KEY)

@@ -23,6 +23,7 @@ class IWonderMigrations < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.string :report_type # line, pie, test
+      t.boolean :pin_to_dashboard
       t.timestamps
     end
     

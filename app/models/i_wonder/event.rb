@@ -7,9 +7,21 @@ module IWonder
     
     class << self
       def merge_session_to_user(session_id, user_id)
-        update_all("user_id = '#{user_id}'", "session_id = '#{session_id}' AND user_id IS NULL")
+        # grab the session_id off of the new_visitor attached to that user
+        new_visitor_event = Event.where(:user_id => user_id, :event_type => "new_visitor").first
+        original_session_id = (new_visitor_event ? new_visitor_event.session_id : session_id)
         
-        # TODO: remove all, but the earliest new_visit event
+
+        # for all events on the current session, attach the user and session from that first event
+        update_all({:user_id => user_id, :session_id => original_session_id}, ["session_id = ? AND user_id IS NULL", session_id])
+        
+        # clear our any new_visitor events other than the first one
+        if new_visitor_event and original_session_id != session_id
+          Event.where(:user_id => user_id, :event_type => "new_visitor").where("id <> ?", new_visitor_event.id).delete_all
+        end
+        
+        
+        return original_session_id
       end
       # handle_asynchronously :merge_session_to_user
       
@@ -53,8 +65,6 @@ module IWonder
           }
         }.first
       end
-      
-
       
     end
   end

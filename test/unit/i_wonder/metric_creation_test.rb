@@ -46,19 +46,19 @@ module IWonder
       assert !@metric.valid?
       
       @metric.model_counter_class = "IWonder::Metric"
-      assert @metric.valid?
+      assert_valid @metric
       
       @metric.model_counter_scopes = "fake_scope"
       assert !@metric.valid?
       
       @metric.model_counter_scopes = "archived"
-      assert @metric.valid?
+      assert_valid @metric
       
       @metric.model_counter_scopes = "archived.fake_scope"
       assert !@metric.valid?
       
       @metric.model_counter_scopes = "archived.takes_snapshots"
-      assert @metric.valid?
+      assert_valid @metric
     end
    
     test "set_event_collection_method works" do

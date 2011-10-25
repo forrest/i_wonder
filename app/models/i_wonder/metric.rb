@@ -86,7 +86,7 @@ module IWonder
             end
           end
           
-          if self.model_counter_method == "Creation Rate" and !self.model_counter_class.constantize.respond_to?("created_at")
+          if self.model_counter_method == "Creation Rate" and !self.model_counter_class.constantize.new.respond_to?("created_at")
             errors.add(:base, "Can't calculate creation rate on models without a :created_at column")
           end
           

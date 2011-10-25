@@ -51,6 +51,31 @@ module IWonder
       
     end
     
+    test "merging events to a user" do
+      Event.delete_all
+      
+      Timecop.travel(Time.zone.now - 30.days) do
+        @e11 = Event.create :event_type => "new_visitor", :session_id => "123"
+        @e12 = Event.create :event_type => "hit", :session_id => "123"
+        @e13 = Event.create :event_type => "hit", :session_id => "123", :user_id => "1"
+        
+        Event.merge_session_to_user("123", "1")
+        
+        assert_equal 3, Event.where(:user_id => "1").count
+        assert_equal 3, Event.where(:session_id => "123").count
+        assert_equal 1, Event.where(:session_id => "123", :user_id => "1", :event_type => "new_visitor").count
+      end
+      
+      @e21 = Event.create :event_type => "new_visitor", :session_id => "321"
+      @e22 = Event.create :event_type => "hit", :session_id => "321"
+      Event.merge_session_to_user("321", "1")
+      
+      assert_equal 4, Event.where(:session_id => "123").count
+      assert_equal 1, Event.where(:session_id => "123", :event_type => "new_visitor").count
+      assert_equal 0, Event.where(:session_id => "321").count
+      assert_equal 4, Event.where(:user_id => "1").count
+      
+    end
     
   end
 end

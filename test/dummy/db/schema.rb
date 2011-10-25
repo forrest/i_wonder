@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
     t.integer  "frequency"
     t.datetime "earliest_measurement"
     t.datetime "last_measurement"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "i_wonder_report_memberships", :force => true do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
     t.string   "name"
     t.text     "description"
     t.string   "report_type"
+    t.boolean  "pin_to_dashboard"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
