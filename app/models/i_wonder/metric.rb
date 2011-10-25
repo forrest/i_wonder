@@ -1,6 +1,7 @@
 module IWonder
   class Metric < ActiveRecord::Base
-    attr_accessible :name, :frequency, :archived, :collection_method
+    attr_accessible :name, :frequency, :archived, :collection_method, :back_date_30_snapshots
+    attr_writer :back_date_30_snapshots 
 
     serialize :options, Hash
     attr_accessible :collection_type, :combination_rule, :takes_snapshots
@@ -183,6 +184,11 @@ module IWonder
       end
     end
     
+    after_save :back_date_if_chosen
+    def back_date_if_chosen
+      if @back_date_30_snapshots
+      end
+    end
     
   private
   

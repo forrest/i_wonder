@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = IWonder::VERSION
   s.authors     = ["Forrest Zeisler"]
   s.email       = ["development@forrestzeisler.com"]
-  s.homepage    = "http://forrestzeisler.com"
+  s.homepage    = "http://github.com/forrest/i_wonder"
   s.summary     = "Read \"The Lean Startup\" and got inspired."
   s.description = "Analytics and AB Testing awesomeness for rails."
 

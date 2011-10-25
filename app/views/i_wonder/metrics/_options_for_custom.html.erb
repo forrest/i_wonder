@@ -26,5 +26,11 @@
 			<%= f.label :frequency, "Snapshot frequency" %>
 			<%= f.select :frequency, [["Hourly", 1.hour], ["Daily", 1.day], ["Weekly", 1.week]]%>
 		</div>
+		
+		<div class="field">
+			<%= f.check_box :back_date_30_snapshots%>
+			<%= f.label :back_date_30_snapshots, "Try and guess values for the last 30 snapshots?" %>
+		</div>
+		
 	</div>
 </div>
