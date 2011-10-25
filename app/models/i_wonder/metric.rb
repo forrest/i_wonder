@@ -12,7 +12,7 @@ module IWonder
     hash_accessor :options, :event_counter_event
     hash_accessor :options, :model_counter_class
     hash_accessor :options, :model_counter_scopes
-    hash_accessor :options, :model_counter_method, :default => "Creation Rate"
+    hash_accessor :options, :model_counter_method, :default => "Creation Rate" # "Creation Rate" or "Total Number"
     
 
     has_many :report_memberships
@@ -104,14 +104,21 @@ module IWonder
   private
   
     def set_event_collection_method
-      self.collection_method = "IWonder::Event.where(:event_type => :#{event_counter_event}).where(\"created_at >= ? AND created_at < ?\", start_time, end_time)"
+      self.collection_method = "IWonder::Event.where(:event_type => \"#{event_counter_event}\").where(\"created_at >= ? AND created_at < ?\", start_time, end_time).count"
     end
     
     def set_model_collection_method
-      if model_counter_method == "Creation Rate"
-        self.collection_method = "IWonder::Event.where(:....)"
+      query = model_counter_class.dup
+      
+      if model_counter_scopes.present?
+        query += "." unless model_counter_scopes =~ /^\./
+        query += model_counter_scopes.dup
+      end
+
+      if model_counter_method == "Creation Rate"        
+        self.collection_method = "#{query}.where(\"created_at >= ? AND created_at < ?\", start_time, end_time).count"
       else # total numbers
-        self.collection_method = "IWonder::Event.where(:....)"
+        self.collection_method = "#{query}.count"
       end
     end
 
