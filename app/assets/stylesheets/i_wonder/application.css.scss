@@ -30,6 +30,8 @@ html, body { background-color: #e5e5e5;  font-family: Verdana, Helvetica, Arial;
   }
   #container { padding: 20px 40px; }
   
+  p.description { font-size:90%; color:#555;}
+  
   p.empty_list {color:#666; }
 
   ul.primary_list { padding:0px; margin:10px 0; border:1px solid $light_blue_box_border; border-bottom:none; background-color:$light_blue_box_background;
@@ -45,11 +47,6 @@ html, body { background-color: #e5e5e5;  font-family: Verdana, Helvetica, Arial;
       } 
     }
   }
-
-  .show {
-    p.description { font-size:90%; color:#555;}
-  }
-  
   
   form.main_form { background-color:$light_blue_box_background; border:1px solid $light_blue_box_border; padding:10px 15px; display:inline-block;
    h3 {margin:0 0 10px 0;}
