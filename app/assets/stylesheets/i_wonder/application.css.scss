@@ -19,16 +19,16 @@ html, body { background-color: #e5e5e5;  font-family: Verdana, Helvetica, Arial;
   &.flash_error, &.flash_alert { background-color:$pale_red; border: solid 1px$dark_red; }
 }
 
-#i_wonder_wrapper {width:75%; margin: 20px auto 0 auto; @include shadow();
+#i_wonder_wrapper {width:75%; margin: 20px auto 0 auto; @include shadow(); @include rounded_corners(4px); overflow:hidden; background-color: #FFF;
   
-  nav {background-color:#666; @include quick_grad(#666, 0.1);  text-align:right;
+  nav {background-color:#777; @include quick_grad(#777, 0.2);  text-align:right; @include rounded_corners(4px);
     a, span { display:block; padding:5px 10px;}
-    a { font-weight:bold; color:#eef; float:left; text-decoration:none; border-right:1px solid #222; border-left:1px solid #778;
-      &:hover {color:#888;}
+    a { font-weight:bold; color:#eef; float:left; text-decoration:none; border-right:1px solid #222; border-left:1px solid #778; text-shadow:-1px -1px 1px #444;
+      &:hover {color:#bbb; text-shadow:1px 1px 1px #333;}
     }
-    span { color:#ddf;}
+    span { color:#234;}
   }
-  #container { background-color: #FFF; padding: 20px 40px; border: solid 1px #666; }
+  #container { padding: 20px 40px; }
   
   p.empty_list {color:#666; }
 
@@ -61,5 +61,30 @@ html, body { background-color: #e5e5e5;  font-family: Verdana, Helvetica, Arial;
      span.description {color:#555; font-size:80%;}
    }
   }
+  
+  form .field_with_errors { display:inline;
+    label { color:red; }
+    input { color:red; border-color:red;}
+  }
+
+  #error_explanation {
+    width: 450px;
+    border: 2px solid red;
+    padding: 7px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    h2 {
+      text-align: left;
+      font-weight: bold;
+      padding: 5px 5px 5px 15px;
+      font-size: 12px;
+      margin: -7px;
+      margin-bottom: 0px;
+      background-color: #c00;
+      color: #fff; }
+    ul li {
+      font-size: 12px;
+      list-style: square; } }
   
 }
