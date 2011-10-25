@@ -1,7 +1,9 @@
 module IWonder
   class Metric < ActiveRecord::Base
-    attr_accessible :name, :frequency, :archived, :collection_method, :back_date_30_snapshots
-    attr_writer :back_date_30_snapshots 
+    BACK_DATE_ITERATIONS = 30
+    
+    attr_accessible :name, :frequency, :archived, :collection_method, :back_date_snapshots
+    attr_writer :back_date_snapshots 
 
     serialize :options, Hash
     attr_accessible :collection_type, :combination_rule, :takes_snapshots
@@ -180,7 +182,7 @@ module IWonder
       while end_time <= Time.zone.now do
         self.snapshots.create(:data => run_collection_method_from(start_time, end_time), :start_time => start_time, :end_time => end_time)
       
-        if self.earliest_measurement.nil?
+        if self.earliest_measurement.nil? or self.earliest_measurement > start_time
           self.update_attribute(:earliest_measurement, start_time)
         end
         
@@ -190,10 +192,12 @@ module IWonder
     
     after_save :back_date_if_chosen
     def back_date_if_chosen
-      if @back_date_30_snapshots and takes_snapshots?
-        start_time = Time.zone.now - 30 * frequency
+      if @back_date_snapshots and @back_date_snapshots.to_s =~ /1|true|on/i and takes_snapshots? and self.earliest_measurement.nil?
+        start_time = Time.zone.now - BACK_DATE_ITERATIONS * frequency
         end_time = start_time + frequency
+        start_time += 1.second
         self.snapshots.create(:data => run_collection_method_from(start_time, end_time), :start_time => start_time, :end_time => end_time)
+        self.update_attribute(:earliest_measurement, start_time)
         
         # not that the first snapshot is taken, running the :take_snapshot command will fill in the rest
         take_snapshot

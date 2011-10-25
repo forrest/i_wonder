@@ -101,6 +101,17 @@ module IWonder
       end
     end
     
+    test "backdating custom metric" do
+      Timecop.freeze(2012, 10, 24) do      
+        @metric = Metric.create(:name => "Test Metric", :frequency => 1.day, :back_date_snapshots => true, :collection_type => "custom", :collection_method => "1")
+        @metric.reload
+        
+        assert_equal 30, @metric.snapshots.count
+        assert_equal Time.zone.now - 30.days + 1.second, @metric.earliest_measurement
+      end
+    end
+    
+    
     test "grabbing values from no-snapshot collection_method" do
       Timecop.freeze(2012, 10, 24) do      
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => -1, :collection_method => "3")
@@ -112,7 +123,6 @@ module IWonder
     end
     
     test "merging snapshot methods (sumation vs averaging)" do
-      
       Timecop.freeze(2012, 10, 24) do      
         # with the default summation set
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => 1.day)
@@ -132,7 +142,7 @@ module IWonder
       end
     end
 
-    #TODO: check the earliest_measurement in tests above
+    
 
   end
 end
