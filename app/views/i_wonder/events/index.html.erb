@@ -1,19 +1,15 @@
-<div id="i_wonder_wrapper">
-	<%= link_to "< back to dashboard", root_url %>
-	<h1>Events</h1>
+<h1>Events</h1>
 
-	<ul id="event_list" class="primary_list">
-		<% for type_group in @groups do %>
-			<li>
-				<%= link_to event_path(:id => type_group[:event_type]) do %>
-					<h3><%= type_group[:event_type] %></h3>
-					<p>
-						<span>Times: <%=  type_group[:count] %></span>
-						<span>Most recently at <%= type_group[:most_recent].strftime("%Y-%m-%d %H:%M") %></span>
-					</p>
-				<% end %>
-			</li>
-		<% end %>		
-	</ul>
-
-</div>
+<ul id="event_list" class="primary_list">
+	<% for type_group in @groups do %>
+		<li>
+			<%= link_to event_path(:id => type_group[:event_type]) do %>
+				<h3><%= type_group[:event_type] %></h3>
+				<p>
+					<span>Times: <%=  type_group[:count] %></span>
+					<span>Most recently at <%= type_group[:most_recent].strftime("%Y-%m-%d %H:%M") %></span>
+				</p>
+			<% end %>
+		</li>
+	<% end %>		
+</ul>

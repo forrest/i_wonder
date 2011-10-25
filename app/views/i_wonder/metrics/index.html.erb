@@ -1,28 +1,25 @@
-<div id="i_wonder_wrapper">
-	<%= link_to "< back to dashboard", root_url %>
-	<h1>Metrics</h1>
-	<h3>What are we tracking?</h3>
+<h1>Metrics</h1>
+<h3>What are we tracking?</h3>
 
-	<% if @metrics.empty? %>
-		<p class="empty_list">You don't have any metrics</p>
-	<% else %>
-		<ul id="metric_list" class="primary_list">
-			<% for metric in @metrics do %>
-				<li>
-					<%= link_to metric do %>
-						<h3><%= metric.name %></h3>
-						<% if metric.last_measurement %>
-							<p>last updated on : <%= metric.last_measurement.to_s(:short) %></p>
-						<% else %>
-							<p>Not run</p>
-						<% end %>
+<% if @metrics.empty? %>
+	<p class="empty_list">You don't have any metrics</p>
+<% else %>
+	<ul id="metric_list" class="primary_list">
+		<% for metric in @metrics do %>
+			<li>
+				<%= link_to metric do %>
+					<h3><%= metric.name %></h3>
+					<% if metric.last_measurement %>
+						<p>last updated on : <%= metric.last_measurement.to_s(:short) %></p>
+					<% else %>
+						<p>Not run</p>
 					<% end %>
-				</li>
-			<% end %>
-		</ul>
-	<% end %>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>
 
-	<p>
-		<%= button_to "Track more stuff!", url_for(:action => :new), :method => :get %>
-	</p>
-</div>
+<p>
+	<%= button_to "Track more stuff!", url_for(:action => :new), :method => :get %>
+</p>

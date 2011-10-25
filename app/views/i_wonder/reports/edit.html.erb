@@ -1,9 +1,7 @@
-<div id="i_wonder_wrapper">
-	<h1>Edit Report</h1>
+<h1>Edit Report</h1>
 
-	<%= render "form" %>
+<%= render "form" %>
 
-	<p>
-		<%= link_to "< cancel", url_for(:action => :show, :id => @report.id) %>
-	</p>
-</div>
+<p>
+	<%= link_to "< cancel", url_for(:action => :show, :id => @report.id) %>
+</p>

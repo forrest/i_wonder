@@ -6,12 +6,23 @@
 		<%= javascript_include_tag("i_wonder/application") %>
 	</head>
 	<body>
-		<div id="container">
-			<% flash.each do |name, msg| %>
-	      <%= content_tag :div, msg, :class => "flash flash_#{name} clearfix" %>
-	    <% end %>
+		<div id="i_wonder_wrapper">
+			<nav>
+				<%= link_to "< #{IWonder.configuration.app_name }", IWonder.configuration.back_to_app_link %>
+				<%= link_to "Dashboard", root_path %>
+				<%= link_to "Reports", reports_path %>
+				<%= link_to "Metrics", metrics_path %>
+				<%= link_to "Events", events_path %>
+				<span>I Wonder Analytics</span>
+			</nav>
+		
+			<div id="container">
+				<% flash.each do |name, msg| %>
+		      <%= content_tag :div, msg, :class => "flash flash_#{name} clearfix" %>
+		    <% end %>
 
-			<%= yield %>
+				<%= yield %>
+			</div>
 		</div>
 	</body>
 </html>

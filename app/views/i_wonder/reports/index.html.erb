@@ -1,23 +1,20 @@
-<div id="i_wonder_wrapper">
-	<%= link_to "< back to dashboard", root_url %>
-	<h1>Reports</h1>
+<h1>Reports</h1>
 
-	<% if @reports.empty? %>
-		<p class="empty_list">You don't have any reports</p>
-	<% else %>
-		<ul id="report_list" class="primary_list">
-			<% for report in @reports do %>
-				<li>
-					<%= link_to url_for(:action => :show, :id => report.id) do %>
-						<h3><span>I wonder</span> <%= report.name %></h3>
-						<p><%= report.description %></p>
-					<% end %>
-				</li>
-			<% end %>
-		</ul>
-	<% end %>
+<% if @reports.empty? %>
+	<p class="empty_list">You don't have any reports</p>
+<% else %>
+	<ul id="report_list" class="primary_list">
+		<% for report in @reports do %>
+			<li>
+				<%= link_to url_for(:action => :show, :id => report.id) do %>
+					<h3><span>I wonder</span> <%= report.name %></h3>
+					<p><%= report.description %></p>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>
 
-	<p>
-		<%= button_to "Create a new report", url_for(:action => :new), :method => :get%>
-	</p>
-</div>
+<p>
+	<%= button_to "Create a new report", url_for(:action => :new), :method => :get%>
+</p>

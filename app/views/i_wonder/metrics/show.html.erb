@@ -1,5 +1,12 @@
-<div id="i_wonder_wrapper" class="show">
+<div class="show">
 	<h1><%= @metric.name%></h1>
+	
+	<p>
+		<%= link_to "Edit", edit_metric_path(@metric) %>
+		|
+		<%= link_to "Delete", metric_path(@metric), :method => :delete, :confirm => "Are you sure?" %>
+	</p>
+	
 	
 	<% if @metric.collection_type =~ /event_counter/ %>
 		<p>
@@ -18,12 +25,4 @@
 		
 	<% end %>
 	
-	
-	<p>
-		<%= link_to "< Back to index", metrics_path %>
-		|
-		<%= link_to "Edit", edit_metric_path(@metric) %>
-		|
-		<%= link_to "Delete", metric_path(@metric), :method => :delete, :confirm => "Are you sure?" %>
-	</p>
 </div>
