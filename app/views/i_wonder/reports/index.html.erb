@@ -8,7 +8,7 @@
 		<ul id="report_list" class="primary_list">
 			<% for report in @reports do %>
 				<li>
-					<%= link_to @report do %>
+					<%= link_to report do %>
 						<h3><span>I wonder</span> <%= report.name %></h3>
 						<p><%= report.description %></p>
 					<% end %>
