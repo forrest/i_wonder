@@ -24,6 +24,7 @@ More big plans!
 * Rails 3.1 or higher
 * Ability to run hourly rake tasks (rake cron)
 * Ability to run a background worker process (delayed_job)
+* JQuery & JQueryUI being loaded
 
 == Installation
 
@@ -45,21 +46,12 @@ Generate the migration files and migrate your database:
   rake db:migrate
 
 
-=== Create the dashboard controller
-
-Add the engine to your routes. This is where the dashboard will be hosted
-
-  Rails.application.routes.draw do
-    ...
-    mount IWonder::Engine => "/super_analytics_engine"
-  end
-
 This engine will use your standard application layout (unless you set a different layout in the configurations explained later). Whichever layout you use, you
 must include a yield in the HTML header so the CSS and Javascript can be loaded. 
   
   <%= yield :extra_scripts_and_styles %>
   
-This engine also assumes that your layout will handle the flash notifications.
+This engine also assumes that your layout will handle the flash notifications and are loading both jquery and jquery_ujs in the header BEFORE the yield tag above.
 
 ===== Example application layout:
 
@@ -67,6 +59,8 @@ This engine also assumes that your layout will handle the flash notifications.
     <head>
       
       ... your javascript/css/meta/header stuff here ...
+      
+      ... loading jquery and jquery_ujs ...
       
       <%= yield :extra_scripts_and_styles %>
     </head>
@@ -109,7 +103,7 @@ IWonder's controllers will run any <code>:before_filters</code> you have set in 
 
 You can choose to navigate directly to the dashboard. If you want to include a link on your admin page to the i_wonder dashboard, your can access the url with <code>i_wonder.root_url</code> such as:
 
-  <%= link_to "Go to analytics >", i_wonder.root_url %>
+  <%= link_to "Go to analytics >", i_wonder_path %>
 
 
 If you want to configure this gem, add this to an initializer.
