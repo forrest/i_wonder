@@ -38,6 +38,7 @@
    .field { margin:20px 0 20px 0;
      label {font-weight:bold; color:#333; font-size:90%; margin-bottom:5px; display:block;}
      input, textarea, select {margin-left:0px; clear:left;}
+     input[type=checkbox] {float:left; margin-right:5px;}
      input[type=submit] {font-size:120%; font-weight:bold;}
      span.description {color:#555; font-size:80%;}
    }

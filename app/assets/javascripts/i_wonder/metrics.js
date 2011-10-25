@@ -4,11 +4,12 @@
 
 $(function(){
   $("#metric_collection_type").change(function(){
-    $(".details_for_option").hide();
-    $("."+$(this).val()+"_details").show();
+    $(".details_for_option").appendTo($("#unused_form_elements"));
+    
+    $("."+$(this).val()+"_details").appendTo($("#active_options_holder"));
   });
   
-  $("#metric_model_counter_takes_snapshots, #metric_custom_takes_snapshots").change(function(){
+  $("#metric_takes_snapshots").change(function(){
     if($(this).prop('checked')){
       $(".snapshot_details").show();
     }else{

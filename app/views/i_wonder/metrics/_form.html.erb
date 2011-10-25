@@ -11,6 +11,14 @@
     </div>
   <% end %>
 
+
+	<% unless @metric.new_record? %>
+		<div class="field">
+			<%= f.check_box :archived %>
+			<%= f.label :archived %>
+		</div>
+	<% end %>
+
 	<div class="field">
 		<%= f.label :name %>
 		<%= f.text_field :name, :size => 50 %>
@@ -18,82 +26,21 @@
 	
 	<div class="field">
 		<%= f.label :collection_type %>
-		<%= f.select :collection_type, {"event_counter" 		=> {:label => "Simple Event Counter"}, 
-																		"model_counter" 		=> {:label => "Simple Model Count", :disabled => true}, 
+		<%= f.select :collection_type, {"event_counter" 	=> {:label => "Simple Event Counter"},
+																		"model_counter" 	=> {:label => "Simple Model Counter"},
 																		"custom"					=> {:label => "Custom"},
 																		"conversion_rate"	=> {:label => "Conversion Rate", :disabled => true}} %>
 	</div>
 	
 	
-	<div class="details_for_option event_counter_details" <% unless (@metric.collection_type == "event_counter" or @metric.collection_type.nil?) %> style="display:none" <% end %> >
-		<div class="field">
-			<%= f.label :event_counter_event, "Which event would you like to track?"%>
-			<%= f.select :event_counter_event, IWonder::Event.groups.collect{|g| g[:event_type] }%>
-		</div>
-	</div>
-	
-	<div class="details_for_option model_counter_details" <% unless @metric.collection_type == "model_counter" %> style="display:none" <% end %> >
-		<div class="field">
-			<%= f.label :model_counter_class, "Which model would you like to track?"%>
-			<%= f.text_field :model_counter_class, :placeholder => "ex: Account" %>
-		</div>
-		
-		<div class="field">
-			<%= f.label :model_counter_scopes, "List scopes to apply" %>
-			<%= f.text_field :model_counter_scopes, :placeholder => "ex: active" %>
-		</div>		
-		
-		<div class="field">
-			<%= f.label :model_counter_takes_snapshots, "Take Snapshots" %>
-			<%= f.check_box :model_counter_takes_snapshots %>
-			<span class="description">(This way model deletion doesn't effect the numbers)</span>
-		</div>
-		<div class="snapshot_details" <% unless @metric.model_counter_takes_snapshots? %> style="display:none" <% end %> >
-			<div class="field">
-				<%= f.label :model_counter_frequency, "Snapshot frequency" %>
-				<%= f.select :model_counter_frequency, [["Hourly", 1.hour], ["Daily", 1.day], ["Weekly", 1.week]] %>
-			</div>
-			
-			<div class="field">
-				<%= f.label :model_counter_back_date, "Calculate backwards?" %>
-				<%= f.check_box :model_counter_back_date %>
-				<span class="description">(upon saving, IWonder will go through the :created_at dates of the current models at put together historic snapshots. These numbers will be less accurate than future snapshots)</span>
-			</div>
-		</div>	
-	</div>
-	
-	
-	<div class="details_for_option custom_details" <% unless @metric.collection_type == "custom" %> style="display:none" <% end %> >
-		<div class="field">
-			<%= f.label :custom_collection_method, "Custom Query"%>
-			<span class="description">
-				Should return an INTEGER or a hash of keys and values. ex: {:series_a => 1, :series_b => 3}<br/>
-				The <b>start_time</b> and <b>end_time</b> are set for use in your queries.<br/>
-			</span>
-			
-			<%= f.text_area :custom_collection_method, :rows => 3, :cols => 50 %><br/>
-			<span class="description">Note: dangerous words aren't allowed and it's executed in a transaction to avoid accidental database changes.</span>
-		</div>
-		
-		<div class="field">
-			<%= f.label :combination_rule %>
-			<%= f.select :combination_rule, [["sum", "Sum of all the data collected"], ["average", "Average all the data collected"]] %>
-			<span class="description">(method used when merging data from several snapshots)</span>
-		</div>
-		
-		
-		
-		<div class="field">
-			<%= f.label :custom_takes_snapshots, "Take Snapshots" %>
-			<%= f.check_box :custom_takes_snapshots %>
-			<span class="description">(take snapshots if the measurements will be different later ex: Average clients/account)</span>
-		</div>
-		<div class="snapshot_details" <% unless @metric.custom_takes_snapshots? %> style="display:none" <% end %> >
-			<div class="field">
-				<%= f.label :custom_frequency, "Snapshot frequency" %>
-				<%= f.select :custom_frequency, [["Hourly", 1.hour], ["Daily", 1.day], ["Weekly", 1.week]]%>
-			</div>
-		</div>
+	<div id="active_options_holder">
+		<% if @metric.event_counter_type? %>
+			<%= render :partial => "options_for_event_counter", :locals => {:f => f} %>
+		<% elsif @metric.model_counter_type? %>
+			<%= render :partial => "options_for_model_counter", :locals => {:f => f} %>
+		<% elsif @metric.custom_type?%>
+			<%= render :partial => "options_for_custom", :locals => {:f => f} %>
+		<% end %>
 	</div>
 	
 	
@@ -102,6 +49,18 @@
 	<div class="field">
 		<%= f.submit %>
 	</div>
-	
-	
 <% end %>
+
+<div id="unused_form_elements">
+	<%= form_for @metric do |f| %>
+		<% if !@metric.event_counter_type? %>
+			<%= render :partial => "options_for_event_counter", :locals => {:f => f} %>
+		<% end %>
+		<% if !@metric.model_counter_type? %>
+			<%= render :partial => "options_for_model_counter", :locals => {:f => f} %>
+		<% end %>
+		<% if !@metric.custom_type?%>
+			<%= render :partial => "options_for_custom", :locals => {:f => f} %>
+		<% end %>
+	<% end %>
+</div>

@@ -1,0 +1,6 @@
+<div class="details_for_option event_counter_details" >
+	<div class="field">
+		<%= f.label :event_counter_event, "Which event would you like to track?"%>
+		<%= f.select :event_counter_event, IWonder::Event.groups.collect{|g| g[:event_type] }%>
+	</div>
+</div>

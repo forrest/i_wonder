@@ -33,7 +33,7 @@ module IWonder
       @metric.save
       assert @metric.valid?
 
-      @metric.take_snapshot
+      @metric.send(:take_snapshot)
       @metric.reload
 
       assert IWonder::Report.exists?(@report.id)
@@ -52,8 +52,8 @@ module IWonder
       
         assert_equal @snapshot_3, @metric_1.snapshots.most_recent
         assert_nil @metric_2.snapshots.most_recent
-        assert_equal [Time.zone.now - 2.day, Time.zone.now - 1.day], @metric_1.timeframe_for_next_snapshot, "Not calculating times from snapshot correctly"
-        assert_equal [Time.zone.now - 1.day, Time.zone.now], @metric_2.timeframe_for_next_snapshot, "Not calculating times without snapshot correctly"
+        assert_equal [Time.zone.now - 2.day, Time.zone.now - 1.day], @metric_1.send(:timeframe_for_next_snapshot), "Not calculating times from snapshot correctly"
+        assert_equal [Time.zone.now - 1.day, Time.zone.now], @metric_2.send(:timeframe_for_next_snapshot), "Not calculating times without snapshot correctly"
       end
     end
     
@@ -90,8 +90,10 @@ module IWonder
     test "grabbing values from no-snapshot collection_method" do
       Timecop.freeze(2012, 10, 24) do      
         @metric_1 = Factory(:metric, :name => "Test Metric", :frequency => -1, :collection_method => "3")
+        assert !@metric_1.takes_snapshots?
+        
         res = @metric_1.value_from(Time.zone.now - 4.days, Time.zone.now - 2.days + 1.second)
-        assert res.eql?({"Test Metric" => 3.0})
+        assert res.eql?({"Test Metric" => 3.0}), res.inspect
       end
     end
     
@@ -115,6 +117,8 @@ module IWonder
         assert res.eql?({"Test Metric" => 2.0})
       end
     end
+
+    #TODO: check the earliest_measurement in tests above
 
   end
 end

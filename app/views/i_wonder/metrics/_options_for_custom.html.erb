@@ -1,0 +1,30 @@
+<div class="details_for_option custom_details">
+	<div class="field">
+		<%= f.label :custom_collection_method, "Custom Query"%>
+		<span class="description">
+			Should return an INTEGER or a hash of keys and values. ex: {:series_a => 1, :series_b => 3}<br/>
+			The <b>start_time</b> and <b>end_time</b> are set for use in your queries.<br/>
+		</span>
+		
+		<%= f.text_area :collection_method, :rows => 3, :cols => 50 %><br/>
+		<span class="description">Note: dangerous words aren't allowed and it's executed in a transaction to avoid accidental database changes.</span>
+	</div>
+	
+	<div class="field">
+		<%= f.label :combination_rule %>
+		<%= f.select :combination_rule, [["sum", "Sum of all the data collected"], ["average", "Average all the data collected"]] %>
+		<span class="description">(method used when merging data from several snapshots)</span>
+	</div>
+	
+	<div class="field">
+		<%= f.check_box :takes_snapshots %>
+		<%= f.label :takes_snapshots, "Takes Snapshots?" %>
+		<span class="description">(take snapshots if the measurements will be different later ex: Average clients/account)</span>
+	</div>
+	<div class="snapshot_details" <% unless @metric.takes_snapshots? %> style="display:none" <% end %> >
+		<div class="field">
+			<%= f.label :frequency, "Snapshot frequency" %>
+			<%= f.select :frequency, [["Hourly", 1.hour], ["Daily", 1.day], ["Weekly", 1.week]]%>
+		</div>
+	</div>
+</div>

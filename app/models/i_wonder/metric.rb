@@ -1,18 +1,18 @@
 module IWonder
   class Metric < ActiveRecord::Base
-    attr_accessible :name, :frequency, :active, :collection_method
+    attr_accessible :name, :frequency, :archived, :collection_method
 
     serialize :options, Hash
     attr_accessible :collection_type, :combination_rule, :takes_snapshots
     hash_accessor :options, :collection_type, :default => "event_counter"
     hash_accessor :options, :combination_rule, :default => "sum" # sum or average
-    
     hash_accessor :options, :takes_snapshots, :type => :boolean, :default => true
         
-    attr_accessible :event_counter_event, :model_counter_class, :model_counter_scopes, :model_counter_takes_snapshots, :model_counter_frequency
+    attr_accessible :event_counter_event, :model_counter_class, :model_counter_scopes, :model_counter_method
     hash_accessor :options, :event_counter_event
     hash_accessor :options, :model_counter_class
     hash_accessor :options, :model_counter_scopes
+    hash_accessor :options, :model_counter_method, :default => "Creation Rate"
     
 
     has_many :report_memberships
@@ -23,24 +23,35 @@ module IWonder
       end
     end
 
+    # ==============================================================================================================================
+    # The following methods are for creating the metrics with the coorect values ===================================================
+    # ==============================================================================================================================
+
     validates_length_of :name, :minimum => 1, :message => "can't be blank."
 
     QUOTE_REMOVER = /(\".*?\")/m # this should strip out quoted text first. This way variables can still be used in where statements
     DANGEROUS_WORDS = /(save|update|create|destroy|delete)/
 
-    scope :archived, where(:archived => true)
-    scope :active, where("archived = ? or archived IS NULL", false)
-    scope :takes_snapshots, where("frequency > 0")
-    scope :needs_to_be_measured, active.takes_snapshots.where("last_measurement IS NULL OR last_measurement+(frequency * interval '1 second') < NOW()")
-
-
     before_validation :set_collection_method
     def set_collection_method
       if event_counter_type?
-        self.collection_method = "IWonder::Event.where(:....)"
+        set_event_collection_method
+      elsif model_counter_type?
+        set_model_collection_method
       elsif custom_type?
         # It should have saved directly
       end
+    end
+
+    before_validation :adjust_snapshot_settings
+    def adjust_snapshot_settings
+      self.frequency ||= -1
+      if self.takes_snapshots_changed? and not self.takes_snapshots?
+        self.frequency = -1
+      end            
+      self.takes_snapshots = !!(self.frequency.nil? or self.frequency > 0)
+
+      true # this preventing it from thinking the validation failed
     end
 
     validate :avoid_dangerous_words
@@ -86,20 +97,48 @@ module IWonder
       self.collection_type == "custom"
     end
     
-    def takes_snapshots?
-      self.frequency && self.frequency > 0
-    end
-
     def locked?
       snapshots.count > 0
     end
 
+  private
+  
+    def set_event_collection_method
+      self.collection_method = "IWonder::Event.where(:event_type => :#{event_counter_event}).where(\"created_at >= ? AND created_at < ?\", start_time, end_time)"
+    end
+    
+    def set_model_collection_method
+      if model_counter_method == "Creation Rate"
+        self.collection_method = "IWonder::Event.where(:....)"
+      else # total numbers
+        self.collection_method = "IWonder::Event.where(:....)"
+      end
+    end
+
+    # ==============================================================================================================================
+    # The following methods are for data collection and have nothing to do with the intial form creation ===========================
+    # ==============================================================================================================================
+
+  public
+  
+    scope :archived, where(:archived => true)
+    scope :active, where("archived = ? or archived IS NULL", false)
+    scope :takes_snapshots, where("frequency > 0")
+    scope :needs_to_be_measured, active.takes_snapshots.where("last_measurement IS NULL OR last_measurement+(frequency * interval '1 second') < NOW()")
+
+    class << self
+      def take_snapshots
+        needs_to_be_measured.find_each(&:take_measurement)
+      end
+      # handle_asynchronously :take_snapshots
+    end
+  
     # returns a hash with all the key values between the two times. If it has been collecting integers, the key will be the name of the metric
     def value_from(start_time, end_time)
       if takes_snapshots?
         data = self.snapshots.where("created_at >= ? and created_at < ?", start_time, end_time).collect(&:data)
       else
-        data = [self.run_collection_method_from(start_time, end_time)]
+        data = [run_collection_method_from(start_time, end_time)]
       end
       
       # at this point we have an array of hashs or integers
@@ -126,6 +165,9 @@ module IWonder
       return final_hash
     end
     
+    
+  private
+  
     def run_collection_method_from(start_time, end_time)
       @resulting_data = nil
       transaction do
@@ -144,6 +186,10 @@ module IWonder
     def take_snapshot
       start_time, end_time = timeframe_for_next_snapshot
       self.snapshots.create(:data => run_collection_method_from(start_time, end_time))
+      
+      if self.earliest_measurement.nil?
+        self.update_attribute(:earliest_measurement, start_time)
+      end
     end
     
     def timeframe_for_next_snapshot
@@ -158,11 +204,5 @@ module IWonder
       [start_at, end_at]
     end
 
-    class << self
-      def take_snapshots
-        needs_to_be_measured.find_each(&:take_measurement)
-      end
-      # handle_asynchronously :take_snapshots
-    end
   end
 end

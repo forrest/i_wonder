@@ -1,0 +1,29 @@
+<div class="details_for_option model_counter_details">
+	<div class="field">
+		<%= f.label :model_counter_method, "Track which value?" %>
+		<%= f.select :model_counter_method, ["Creation Rate", "Total Number"] %>
+	</div>
+	
+	<div class="field">
+		<%= f.label :model_counter_class, "Which model would you like to track?"%>
+		<%= f.text_field :model_counter_class, :placeholder => "ex: Account" %>
+	</div>
+	
+	<div class="field">
+		<%= f.label :model_counter_scopes, "List scopes to apply" %>
+		<%= f.text_field :model_counter_scopes, :placeholder => "ex: active" %>
+	</div>
+	
+	<div class="field">
+		<%= f.check_box :takes_snapshots %>
+		<%= f.label :takes_snapshots, "Takes Snapshots?" %>
+		<span class="description">(avoid having model deletion throw off your numbers)</span>
+	</div>
+	<div class="snapshot_details" <% unless @metric.takes_snapshots? %> style="display:none" <% end %> >
+		<div class="field">
+			<%= f.label :frequency, "Snapshot frequency" %>
+			<%= f.select :frequency, [["Hourly", 1.hour], ["Daily", 1.day], ["Weekly", 1.week]]%>
+		</div>
+	</div>		
+
+</div>

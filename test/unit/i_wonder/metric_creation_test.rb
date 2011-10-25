@@ -36,6 +36,30 @@ module IWonder
       @metric.model_counter_scopes = "archived.takes_snapshots"
       assert @metric.valid?
     end
+   
+    test "frequency and takes_snapshots is being set correctly" do
+      @metric = Metric.create(:name => "test name")
+      assert_valid @metric
+      assert !@metric.takes_snapshots?
+      assert_equal -1, @metric.frequency
+      
+      @metric.update_attributes(:takes_snapshots => true, :frequency => 1.hour)
+      assert_valid @metric
+      assert @metric.takes_snapshots?
+      assert_equal 1.hour, @metric.frequency
+      
+      @metric.update_attributes(:takes_snapshots => false)
+      assert !@metric.takes_snapshots?
+      assert_equal -1, @metric.frequency
+      
+      @metric.update_attributes(:takes_snapshots => true, :frequency => 1.hour)
+      assert_valid @metric
+      
+      @metric.update_attributes(:frequency => -1)
+      assert_valid @metric
+      assert !@metric.takes_snapshots?
+      assert_equal -1, @metric.frequency
+    end
     
   end
 end
