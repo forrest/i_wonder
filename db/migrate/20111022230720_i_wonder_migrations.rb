@@ -51,6 +51,8 @@ class IWonderMigrations < ActiveRecord::Migration
       t.integer :metric_id
       t.integer :count
       t.text :complex_data
+      t.timestamp :start_time
+      t.timestamp :end_time
       t.timestamps
     end
     

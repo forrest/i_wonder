@@ -15,8 +15,8 @@ module IWonder
       
       
       def fast_create(attr_hash)
-        attr_hash[:created_at] = Time.now.utc
-        attr_hash[:updated_at] = Time.now.utc
+        attr_hash[:created_at] = Time.zone.now.utc
+        attr_hash[:updated_at] = Time.zone.now.utc
         
         keys = [:event_type, :account_id, :user_id, :session_id, :controller, :action, :extra_details, :remote_ip, :user_agent, :referrer, :created_at, :updated_at]
         key_str = keys.collect(&:to_s).join(", ")

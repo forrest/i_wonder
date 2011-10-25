@@ -20,7 +20,7 @@ module IWonder
     has_many :reports, :through => :report_memberships
     has_many :snapshots do
       def most_recent
-        order("created_at DESC").first
+        order("end_time DESC").first
       end
     end
 
@@ -145,7 +145,7 @@ module IWonder
     # returns a hash with all the key values between the two times. If it has been collecting integers, the key will be the name of the metric
     def value_from(start_time, end_time)
       if takes_snapshots?
-        data = self.snapshots.where("created_at >= ? and created_at < ?", start_time, end_time).collect(&:data)
+        data = self.snapshots.where("start_time >= ? and end_time <= ?", start_time, end_time).collect(&:data)
       else
         data = [run_collection_method_from(start_time, end_time)]
       end
@@ -177,16 +177,26 @@ module IWonder
     #TODO: some code to avoid overlap in snapshots needs to be added
     def take_snapshot
       start_time, end_time = timeframe_for_next_snapshot
-      self.snapshots.create(:data => run_collection_method_from(start_time, end_time))
+      while end_time <= Time.zone.now do
+        self.snapshots.create(:data => run_collection_method_from(start_time, end_time), :start_time => start_time, :end_time => end_time)
       
-      if self.earliest_measurement.nil?
-        self.update_attribute(:earliest_measurement, start_time)
+        if self.earliest_measurement.nil?
+          self.update_attribute(:earliest_measurement, start_time)
+        end
+        
+        start_time, end_time = timeframe_for_next_snapshot
       end
     end
     
     after_save :back_date_if_chosen
     def back_date_if_chosen
-      if @back_date_30_snapshots
+      if @back_date_30_snapshots and takes_snapshots?
+        start_time = Time.zone.now - 30 * frequency
+        end_time = start_time + frequency
+        self.snapshots.create(:data => run_collection_method_from(start_time, end_time), :start_time => start_time, :end_time => end_time)
+        
+        # not that the first snapshot is taken, running the :take_snapshot command will fill in the rest
+        take_snapshot
       end
     end
     
@@ -210,13 +220,15 @@ module IWonder
     def timeframe_for_next_snapshot
       recent = self.snapshots.most_recent
       if recent.present?
-        start_at =  recent.created_at
-        end_at = start_at + frequency
+        start_time =  recent.end_time
+        end_time = start_time + frequency
+        start_time += 1.second # this avoids overlap with the previous snapshot
       else
-        start_at = Time.zone.now - frequency
-        end_at = Time.zone.now
+        start_time = Time.zone.now - frequency
+        end_time = Time.zone.now
       end
-      [start_at, end_at]
+      
+      [start_time, end_time]
     end
 
   end

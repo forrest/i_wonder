@@ -1,6 +1,6 @@
 module IWonder
   class Snapshot < ActiveRecord::Base
-    attr_accessible :data
+    attr_accessible :data, :start_time, :end_time
     serialize :complex_data, Hash
     
     belongs_to :metric
@@ -28,5 +28,6 @@ module IWonder
     def complex?
       self.complex_data.present?
     end
+    
   end
 end

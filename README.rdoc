@@ -54,29 +54,6 @@ Add the engine to your routes. This is where the dashboard will be hosted
     mount IWonder::Engine => "/super_analytics_engine"
   end
 
-This engine will use your standard application layout (unless you set a different layout in the configurations explained later). Whichever layout you use, you
-must include a yield in the HTML header so the CSS and Javascript can be loaded. 
-  
-  <%= yield :extra_scripts_and_styles %>
-  
-This engine also assumes that your layout will handle the flash notifications.
-
-===== Example application layout:
-
-  <html>
-    <head>
-      
-      ... your javascript/css/meta/header stuff here ...
-      
-      <%= yield :extra_scripts_and_styles %>
-    </head>
-    <body>
-      <%= notifications %>
-      <%= yield %>
-    </body>
-  </html
-
-
 === Setting up the hourly cron task
 
 This gem hooks into the "<code>rake cron</code>" request. It can't take snapshots of your metrics any faster than this cron is run. We recommend every hour.

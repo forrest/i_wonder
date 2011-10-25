@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
     t.integer  "metric_id"
     t.integer  "count"
     t.text     "complex_data"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
