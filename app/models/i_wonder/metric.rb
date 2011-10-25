@@ -3,6 +3,7 @@ module IWonder
     BACK_DATE_ITERATIONS = 30
     
     attr_accessible :name, :frequency, :archived, :collection_method, :back_date_snapshots
+    attr_accessor :back_date_snapshots
     attr_writer :back_date_snapshots 
 
     serialize :options, Hash
@@ -84,6 +85,11 @@ module IWonder
               }
             end
           end
+          
+          if self.model_counter_method == "Creation Rate" and !self.model_counter_class.constantize.respond_to?("created_at")
+            errors.add(:base, "Can't calculate creation rate on models without a :created_at column")
+          end
+          
         rescue Exception => e
           errors.add(:model_counter_class, "is not a valid class")
         end

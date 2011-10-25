@@ -45,6 +45,8 @@ class IWonderMigrations < ActiveRecord::Migration
       t.integer :frequency # -1 means that it calculates on demand
       t.timestamp :earliest_measurement
       t.timestamp :last_measurement
+      
+      t.timestamps
     end
     
     create_table :i_wonder_snapshots do |t|
