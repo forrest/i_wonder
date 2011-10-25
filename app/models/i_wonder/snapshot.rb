@@ -1,5 +1,7 @@
 module IWonder
   class Snapshot < ActiveRecord::Base
+    set_table_name "i_wonder_snapshots"
+    
     attr_accessible :data
     serialize :complex_data, Hash
     

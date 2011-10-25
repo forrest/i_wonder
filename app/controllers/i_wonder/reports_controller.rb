@@ -15,11 +15,11 @@ module IWonder
     end
 
     def new
-      @report = Report.new(params[:report])
+      @report = Report.new(params[:i_wonder_report])
     end
 
     def create
-      @report = Report.new(params[:report])
+      @report = Report.new(params[:i_wonder_report])
 
       if @report.save
         redirect_to @report, :notice => "Successfully created report"
@@ -36,7 +36,7 @@ module IWonder
     def update
       @report = Report.find(params[:id])
 
-      if @report.update_attributes(params[:report])
+      if @report.update_attributes(params[:i_wonder_report])
         redirect_to @report, :notice => "Successfully updated report"
       else
         render "edit"

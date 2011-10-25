@@ -11,11 +11,11 @@ module IWonder
       end
 
       def new
-        @metric = Metric.new(params[:metric])
+        @metric = Metric.new(params[:i_wonder_metric])
       end
 
       def create
-        @metric = Metric.new(params[:metric])
+        @metric = Metric.new(params[:i_wonder_metric])
 
         if @metric.save
           redirect_to @metric, :notice => "Successfully created metric"
@@ -32,7 +32,7 @@ module IWonder
       def update
         @metric = Metric.find(params[:id])
 
-        if @metric.update_attributes(params[:metric])
+        if @metric.update_attributes(params[:i_wonder_metric])
           redirect_to @metric, :notice => "Successfully updated metric"
         else
           render "edit"
@@ -42,7 +42,7 @@ module IWonder
       def destroy
         @metric = Metric.find(params[:id])
         @metric.destroy
-        redirect_to metrics_path, :notice => "Metric has been destroyed"
+        redirect_to i_wonder_metrics_path, :notice => "Metric has been destroyed"
       end
     
   end

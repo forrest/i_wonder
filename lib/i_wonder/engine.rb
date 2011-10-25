@@ -2,7 +2,7 @@ module IWonder
   class Engine < Rails::Engine
     # This is for the mounting the engine ===========
     
-    isolate_namespace IWonder
+#    isolate_namespace IWonder
   end
 end
 

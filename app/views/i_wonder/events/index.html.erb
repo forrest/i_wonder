@@ -1,11 +1,11 @@
 <div id="i_wonder_wrapper">
-	<%= link_to "< back to dashboard", root_url %>
+	<%= link_to "< back to IWonder Dashboard", i_wonder_path %>
 	<h1>Events</h1>
 
 	<ul id="event_list" class="primary_list">
 		<% for type_group in @groups do %>
 			<li>
-				<%= link_to event_path(:id => type_group[:event_type]) do %>
+				<%= link_to i_wonder_event_path(:id => type_group[:event_type]) do %>
 					<h3><%= type_group[:event_type] %></h3>
 					<p>
 						<span>Times: <%=  type_group[:count] %></span>

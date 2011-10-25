@@ -1,5 +1,5 @@
 <div id="i_wonder_wrapper">
-	<%= link_to "< back to dashboard", root_url %>
+	<%= link_to "< back to IWonder Dashboard", i_wonder_path %>
 	<h1>Reports</h1>
 
 	<% if @reports.empty? %>
@@ -8,7 +8,7 @@
 		<ul id="report_list" class="primary_list">
 			<% for report in @reports do %>
 				<li>
-					<%= link_to url_for(:action => :show, :id => report.id) do %>
+					<%= link_to @report do %>
 						<h3><span>I wonder</span> <%= report.name %></h3>
 						<p><%= report.description %></p>
 					<% end %>

@@ -6,7 +6,7 @@ module IWonder
   class MetricsControllerTest < ActionDispatch::IntegrationTest
     
     test "creating new metric" do
-      post "i_wonder/metrics", :metric => {:name => "New Metric"}
+      post "i_wonder/metrics", :i_wonder_metric => {:name => "New Metric"}
       metric = assigns(:metric)
       assert_valid metric
       assert_redirected_to metric

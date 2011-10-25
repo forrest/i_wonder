@@ -1,5 +1,7 @@
 module IWonder
   class Metric < ActiveRecord::Base
+    set_table_name "i_wonder_metrics"
+    
     attr_accessible :name, :frequency, :archived, :collection_method
 
     serialize :options, Hash

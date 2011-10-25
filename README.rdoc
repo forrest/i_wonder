@@ -94,6 +94,17 @@ We also require the highcharts javascript file in your applications asset path. 
 
 IWonder's controllers will run any <code>:before_filters</code> you have set in your application controller. You can easily check for a password or admin status there.
 
+===== example
+
+  class ApplicationController < ActionController::Base
+    before_filter :prevent_unauthorized_reports
+    def prevent_unauthorized_reports
+      if params[:controller] =~ /i_wonder/
+        .... code to check if the person has permission ...
+      end
+    end
+  end
+
 === Options & Configurations
 
 You can choose to navigate directly to the dashboard. If you want to include a link on your admin page to the i_wonder dashboard, your can access the url with <code>i_wonder.root_url</code> such as:

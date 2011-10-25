@@ -1,5 +1,7 @@
 module IWonder
   class Event < ActiveRecord::Base
+    set_table_name "i_wonder_events"
+    
     attr_accessible :event_type, :account_id, :user_id, :session_id, :controller, :action, :referrer, :user_agent, :remote_ip
     serialize :extra_details, Hash
    

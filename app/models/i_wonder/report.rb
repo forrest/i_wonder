@@ -1,5 +1,7 @@
 module IWonder
   class Report < ActiveRecord::Base
+    set_table_name "i_wonder_reports"
+    
     attr_accessible :name, :description, :report_type, :metric_ids
 
     validates_length_of :name, :within => 1..250

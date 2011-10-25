@@ -3,13 +3,13 @@
 
 
 $(function(){
-  $("#metric_collection_type").change(function(){
+  $("#i_wonder_metric_collection_type").change(function(){
     $(".details_for_option").appendTo($("#unused_form_elements"));
     
     $("."+$(this).val()+"_details").appendTo($("#active_options_holder"));
   });
   
-  $("#metric_takes_snapshots").change(function(){
+  $("#i_wonder_metric_takes_snapshots").change(function(){
     if($(this).prop('checked')){
       $(".snapshot_details").show();
     }else{
