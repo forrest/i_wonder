@@ -80,7 +80,7 @@ You can choose to navigate directly to the dashboard. If you want to include a l
 
 If you want to configure this gem, add this to an initializer.
 
-  IWonder.configuration do |c|
+  IWonder.configure do |c|
     c.controllers_to_ignore = []   # These are all the controllers which don't log any events (i_wonder is also ignored)
     c.only_log_hits_on_200 = true   # By default hits and new visitors won't be logged on anything but a 200 or 304 (not modified). Your custom events will still be recorded.
     c.back_to_app_link = "/" # this is the link hitting the home button in IWonder will take you to.
