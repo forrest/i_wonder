@@ -88,13 +88,9 @@ If you want to configure this gem, add this to an initializer.
   end
 
 
-== Usage
+=== Add hooks for user_id and account_id
 
-=== Event tracking
-
-==== Setting session, user, and account details
-
-This gem will track the visitor with a permanent cookie (will remember them next visit). However, it can also track users and accounts. Simply call one or both of these methods anywhere in the controller. When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be removed if the user has an earlier dated :new_visitor event on their account.
+This gem will track the visitor with a permanent cookie (will remember them next visit). However, it can also track users and accounts. Simply call one or both of these methods anywhere in the controller.
 
   i_wonder_for_user_id(user_id)
 
@@ -102,14 +98,27 @@ or
   
   i_wonder_for_account_id(account_id)
   
-:hits and :new_visitors will be logged automatically. You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller.
-You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code>
-or <code>:account_id</code> in the options, if you want them recorded.
+== Usage
   
+=== Default Events
+  
+When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be turned into a :return_visit if the user has an earlier dated :new_visitor event on their account. :hit, :new_visitor and :return_visit events will be logged automatically. You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller. You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code> or <code>:account_id</code> in the options, if you want them recorded.
+
+=== Custom Events
+
+...
+
+=== Creating Metrics & Reports
+
+...
+
+=== Creating AB Tests
+  
+...
   
 == Contributing & Reporting Issues
 
-In progress...
+...
 
 
 == Licensing
