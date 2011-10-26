@@ -59,31 +59,29 @@ class IWonderMigrations < ActiveRecord::Migration
       t.timestamps
     end
     
-        # 
-        # 
-        # # used for A/B tests
-        # create_table :iw_test_metrics do |t|
-        #   t.string :name
-        #   t.string :sym
-        #   t.integer :iw_report_id
-        #   t.boolean :account_wide, :default => false
-        # end
-        # add_index :iw_test_metrics, :iw_report_id
-        # add_index :iw_test_metrics, :sym
-        # 
-        # 
-        # create_table :iw_test_group_members do |t|
-        #   t.integer :iw_report_id
-        #   t.integer :iw_test_metric_id
-        #   
-        #   # One of these
-        #   t.string :session_id
-        #   t.integer :user_id
-        #   t.integer :account_id
-        # end
-        # add_index :iw_test_group_members, :iw_test_metric_id
-        # add_index :iw_test_group_members, :user_id
-        # add_index :iw_test_group_members, :account_id
-        # add_index :iw_test_group_members, :session_id
+    create_table :i_wonder_ab_tests do |t|
+      t.string :name
+      t.string :sym
+      t.text :description
+
+      t.test :options # serialized
+      t.text :test_group_data # serialized
+      
+      t.timestamps
+    end
+    add_index :i_wonder_tests, :sym
+    
+    
+    create_table :i_wonder_test_group_memberships do |t|
+      t.integer :ab_test_id
+      
+      t.string :member_type
+      t.string :member_id
+
+      t.timestamps
+    end
+    add_index :i_wonder_test_group_memberships, :ab_test_id
+    add_index :i_wonder_test_group_memberships, [:member_type, :member_id], :name => "i_wonder_test_group_memberships_member"
+   
   end
 end
