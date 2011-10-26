@@ -21,9 +21,9 @@ module IWonder
       @app_name = "My App"
     end
     
-    def controllers_to_ignore=(controllers)
-      @new_controllers = [controllers] unless controllers.is_a?(Array)
-      @controllers = ALWAYS_AVOID_CONTROLLERS + @new_controllers.collect(&:to_s)
+    def controllers_to_ignore=(new_controllers)
+      new_controllers = [new_controllers] unless new_controllers.is_a?(Array)
+      @controllers = ALWAYS_AVOID_CONTROLLERS + new_controllers.collect(&:to_s)
       @controllers = @controllers.flatten.uniq
     end
     
