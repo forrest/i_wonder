@@ -64,12 +64,12 @@ class IWonderMigrations < ActiveRecord::Migration
       t.string :sym
       t.text :description
 
-      t.test :options # serialized
+      t.text :options # serialized
       t.text :test_group_data # serialized
       
       t.timestamps
     end
-    add_index :i_wonder_tests, :sym
+    add_index :i_wonder_ab_tests, :sym
     
     
     create_table :i_wonder_test_group_memberships do |t|

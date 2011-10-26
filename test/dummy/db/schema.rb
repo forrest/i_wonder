@@ -34,6 +34,18 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "i_wonder_ab_tests", :force => true do |t|
+    t.string   "name"
+    t.string   "sym"
+    t.text     "description"
+    t.text     "options"
+    t.text     "test_group_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "i_wonder_ab_tests", ["sym"], :name => "index_i_wonder_ab_tests_on_sym"
+
   create_table "i_wonder_events", :force => true do |t|
     t.string   "event_type"
     t.integer  "account_id"
@@ -92,5 +104,16 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "i_wonder_test_group_memberships", :force => true do |t|
+    t.integer  "ab_test_id"
+    t.string   "member_type"
+    t.string   "member_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "i_wonder_test_group_memberships", ["ab_test_id"], :name => "index_i_wonder_test_group_memberships_on_ab_test_id"
+  add_index "i_wonder_test_group_memberships", ["member_type", "member_id"], :name => "i_wonder_test_group_memberships_member"
 
 end

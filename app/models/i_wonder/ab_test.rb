@@ -5,6 +5,6 @@ module IWonder
     serialize :options, Hash
     serialize :test_group_data, Hash
     
-    has_many :test_group_memberships
+    # has_many :test_group_memberships
   end
 end

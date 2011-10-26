@@ -1,0 +1,20 @@
+<h1>A/B Tests</h1>
+
+<% if @ab_tests.empty? %>
+	<p class="empty_list">You don't have any tests</p>
+<% else %>
+	<ul id="ab_test_list" class="primary_list">
+		<% for ab_test in @ab_tests do %>
+			<li>
+				<%= link_to ab_test do %>
+					<h3><span>I wonder</span> <%= ab_test.name %></h3>
+					<p><%= ab_test.description %></p>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>
+
+<p>
+	<%= button_to "Create a new ABTest", url_for(:action => :new), :method => :get%>
+</p>

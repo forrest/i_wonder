@@ -29,11 +29,15 @@
 	
 	<h4>Tracks these metrics</h4>
 	<ul class="report_metric_ids">
-		<% for metric in IWonder::Metric.active.order(:name) do %>
-			<li>
-				<%= check_box_tag "report[metric_ids][]", metric.id, @report.metrics.include?(metric) %>
-				<%= label_tag "report[metric_ids][]", metric.name %>
-			</li>
+		<% if IWonder::Metric.active.length > 0%>
+			<% for metric in IWonder::Metric.active.order(:name) do %>
+				<li>
+					<%= check_box_tag "report[metric_ids][]", metric.id, @report.metrics.include?(metric) %>
+					<%= label_tag "report[metric_ids][]", metric.name %>
+				</li>
+			<% end %>
+		<% else %>
+			You don't have any metrics to track yet.
 		<% end %>
 	</ul>
 	

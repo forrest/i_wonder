@@ -4,8 +4,15 @@ require File.expand_path("../../test_helper.rb", File.dirname(__FILE__))
 
 module IWonder
   class DashboardControllerTest < ActionDispatch::IntegrationTest
-    # test "the truth" do
-    #   assert true
-    # end
+
+    # The before_Filter is in the dummy application
+    test "before_filter security from main_app" do
+      get "/i_wonder"
+      assert_response :success
+      
+      get "/i_wonder", :block_this => true
+      assert_redirected_to "/"
+    end
+
   end
 end
