@@ -85,4 +85,8 @@ class MiddlewareTest < ActionDispatch::IntegrationTest
     assert_equal 0, IWonder::Event.count
   end
   
+  test "return_visit_gets set correctly" do
+    pending "not implemented yet"
+  end
+  
 end

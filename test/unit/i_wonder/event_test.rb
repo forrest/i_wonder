@@ -69,12 +69,14 @@ module IWonder
       @e21 = Event.create :event_type => "new_visitor", :session_id => "321"
       @e22 = Event.create :event_type => "hit", :session_id => "321"
       Event.merge_session_to_user("321", "1")
+      @e21.reload
       
-      assert_equal 4, Event.where(:session_id => "123").count
+      assert_equal 5, Event.where(:session_id => "123").count
       assert_equal 1, Event.where(:session_id => "123", :event_type => "new_visitor").count
+      assert_equal "return_visit", @e21.event_type
+      assert_equal 1, Event.where(:session_id => "123", :event_type => "return_visit").count
       assert_equal 0, Event.where(:session_id => "321").count
-      assert_equal 4, Event.where(:user_id => "1").count
-      
+      assert_equal 5, Event.where(:user_id => "1").count
     end
     
   end

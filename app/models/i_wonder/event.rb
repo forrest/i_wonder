@@ -15,11 +15,10 @@ module IWonder
         # for all events on the current session, attach the user and session from that first event
         update_all({:user_id => user_id, :session_id => original_session_id}, ["session_id = ? AND user_id IS NULL", session_id])
         
-        # clear our any new_visitor events other than the first one
+        # Change the new_visitor to a return_visit
         if new_visitor_event and original_session_id != session_id
-          Event.where(:user_id => user_id, :event_type => "new_visitor").where("id <> ?", new_visitor_event.id).delete_all
+          update_all({:event_type => "return_visit"}, ["user_id = ? AND event_type = ? AND id <> ?", user_id, "new_visitor", new_visitor_event.id])
         end
-        
         
         return original_session_id
       end
