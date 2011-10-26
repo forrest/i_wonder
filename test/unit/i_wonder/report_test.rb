@@ -20,9 +20,9 @@ module IWonder
         series_data = @report.send :collect_series_data, Time.zone.now - 3.days, Time.zone.now, 1.day
         
         proper_results = [
-                          {:name=>"Test Metric 1", :pointInterval=>86400000, :data=>[1.0, 2.0, 3.0]}, 
-                          {:name=>"key_1", :pointInterval=>86400000, :data=>[0.0, 3.0, 3.0]}, 
-                          {:name=>"key_2", :pointInterval=>86400000, :data=>[0.0, 1.0, 2.0]}
+                          {:name=>"Test Metric 1",  :pointStart => (Time.zone.now - 3.days).to_i*1000, :pointInterval=>1.day*1000, :data=>[1.0, 2.0, 3.0]}, 
+                          {:name=>"key_1",          :pointStart => (Time.zone.now - 3.days).to_i*1000, :pointInterval=>1.day*1000, :data=>[0.0, 3.0, 3.0]}, 
+                          {:name=>"key_2",          :pointStart => (Time.zone.now - 3.days).to_i*1000, :pointInterval=>1.day*1000, :data=>[0.0, 1.0, 2.0]}
         ]
         
         assert_equal proper_results, series_data

@@ -103,7 +103,7 @@ module IWonder
     
     test "backdating custom metric" do
       Timecop.freeze(2012, 10, 24) do      
-        @metric = Metric.create(:name => "Test Metric", :frequency => 1.day, :back_date_snapshots => true, :collection_type => "custom", :collection_method => "1")
+        @metric = Metric.create(:name => "Test Metric", :frequency => 1.day, :back_date_snapshots => "1", :collection_type => "custom", :collection_method => "1")
         @metric.reload
         
         assert_equal 30, @metric.snapshots.count

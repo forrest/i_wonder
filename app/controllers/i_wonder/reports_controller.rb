@@ -9,9 +9,20 @@ module IWonder
     def show
       @report = Report.find(params[:id])
       
-      @start_time = Time.zone.now - 30.hours #(params[:start_time] || @report.default_start_time)
-      @end_time = (params[:end_time] || Time.zone.now)
-      @interval_length = 1.hour
+      @start_time = (params[:start_time] ? Time.zone.parse(params[:start_time]) : Time.zone.now - 1.month)
+      @end_time = (params[:end_time] ? Time.zone.parse(params[:end_time]) : Time.zone.now)
+      @interval_length = default_interval_length
+      
+      respond_to {|format|
+        format.html { }
+        format.js {
+          if @report.line?
+            render :partial => "line_report.js"
+          else
+            render :text => "?"
+          end
+        }
+      }
     end
 
     def new
@@ -47,6 +58,28 @@ module IWonder
       @report = Report.find(params[:id])
       @report.destroy
       redirect_to reports_path, :notice => "Report has been destroyed"
+    end
+    
+  protected
+    
+    def default_interval_length
+      length = @end_time - @start_time
+      
+      if length > 2.months
+        interval_length = 1.week
+      elsif length > 1.week
+        interval_length = 1.days
+      else
+        interval_length = 1.hours
+      end
+      
+      # can't show a smaller frequency than the snampshots get taken in.
+      longest_metric_frequency = @report.metrics.collect(&:frequency).max
+      if longest_metric_frequency > interval_length
+        interval_length = longest_metric_frequency 
+      end
+      
+      return interval_length
     end
     
   end

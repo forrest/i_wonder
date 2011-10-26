@@ -4,8 +4,8 @@ require File.expand_path("../../test_helper.rb", File.dirname(__FILE__))
 
 module IWonder
   class ReportsControllerTest < ActionDispatch::IntegrationTest
-    # test "the truth" do
-    #   assert true
-    # end
+    test "setting proper inteval length for line graph" do
+      pending
+    end
   end
 end

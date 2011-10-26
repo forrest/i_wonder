@@ -13,6 +13,12 @@ $pale_red: #ffd2d2;
   box-shadow:$x_offset $y_offset $size $color;
 }
 
+@mixin inset_shadow($x_offset: 0px, $y_offset: 1px, $size: 8px, $color: rgba(0, 0, 0, 0.5)) { 
+  -webkit-box-shadow:$x_offset $y_offset $size $color inset;
+  -moz-box-shadow:$x_offset $y_offset $size $color inset;
+  box-shadow:$x_offset $y_offset $size $color inset;
+}
+
 @mixin gradiant ($color_a:#aaa, $color_b:#bbb) { 
   position:relative;
   background-image:     -webkit-linear-gradient(top, $color_a, $color_b);                       /* Chrome 10+, Saf5.1+ */

@@ -17,3 +17,10 @@ form.report {
     li {padding:0px; margin:0px; list-style:none;}
   }
 }
+
+#chart_holder {background-color:#f0f1fa; padding:8px; border:1px solid #ddd; @include rounded_corners(4px); @include inset_shadow(1px, 1px, 3px, rgba(0,0,0,0.3));
+  #chart_options {
+    label {color:#555; font-size:90%; font-weight:bold;}
+  }
+  #iw_chart_container {background-color:#fff; margin-top:5px; border:1px solid #ddd; @include shadow(1px, 1px, 3px, rgba(0,0,0,0.3));}
+}

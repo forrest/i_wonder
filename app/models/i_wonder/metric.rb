@@ -26,6 +26,7 @@ module IWonder
         order("end_time DESC").first
       end
     end
+    accepts_nested_attributes_for :snapshots, :allow_destroy => true
 
     # ==============================================================================================================================
     # The following methods are for creating the metrics with the coorect values ===================================================
@@ -56,6 +57,14 @@ module IWonder
       self.takes_snapshots = !!(self.frequency.nil? or self.frequency > 0)
 
       true # this preventing it from thinking the validation failed
+    end
+
+    before_validation :remove_existing_snapshots
+    def remove_existing_snapshots
+      if collection_method_changed? or frequency_changed?
+        self.earliest_measurement = nil
+        self.snapshots.each(&:mark_for_destruction)
+      end
     end
 
     validate :avoid_dangerous_words
@@ -125,10 +134,19 @@ module IWonder
         query += model_counter_scopes.dup
       end
 
+      #TODO: these queries should be scoped under the table name
       if model_counter_method == "Creation Rate"        
+        self.combination_rule = "sum"
         self.collection_method = "#{query}.where(\"created_at >= ? AND created_at < ?\", start_time, end_time).count"
       else # total numbers
-        self.collection_method = "#{query}.count"
+        
+        self.combination_rule = "average"
+        if self.model_counter_class.constantize.new.respond_to?("created_at") 
+          # this is more accurate for guessing backwards
+          self.collection_method = "#{query}.where(\"created_at < ?\", end_time).count"
+        else
+          self.collection_method = "#{query}.count"
+        end
       end
     end
 
@@ -153,7 +171,7 @@ module IWonder
     # returns a hash with all the key values between the two times. If it has been collecting integers, the key will be the name of the metric
     def value_from(start_time, end_time)
       if takes_snapshots?
-        data = self.snapshots.where("start_time >= ? and end_time <= ?", start_time, end_time).collect(&:data)
+        data = self.snapshots.where("start_time < ? AND end_time > ?", end_time, start_time).collect(&:data)
       else
         data = [run_collection_method_from(start_time, end_time)]
       end
@@ -199,6 +217,9 @@ module IWonder
     after_save :back_date_if_chosen
     def back_date_if_chosen
       if @back_date_snapshots and @back_date_snapshots.to_s =~ /1|true|on/i and takes_snapshots? and self.earliest_measurement.nil?
+        
+        self.reload # this keeps bad variables and change states from sneaking in
+        
         start_time = Time.zone.now - BACK_DATE_ITERATIONS * frequency
         end_time = start_time + frequency
         start_time += 1.second

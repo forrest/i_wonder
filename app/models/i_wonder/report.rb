@@ -77,7 +77,7 @@ module IWonder
       }
       
       keys_list.collect{|key|
-        {:name => key, :pointInterval => interval_length*1000, :data => master_hashes_array.collect{|mha| mha[key] }}
+        {:name => key, :pointStart => start_time.to_i * 1000, :pointInterval => interval_length*1000, :data => master_hashes_array.collect{|mha| mha[key] }}
       }
     end
 

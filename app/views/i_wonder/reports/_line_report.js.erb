@@ -1,0 +1,20 @@
+<%
+options ||= {}
+options[:chart] ||= {}
+options[:chart][:renderTo] = "iw_chart_container";
+
+options[:title] ||= { :text => "I wonder "+@report.name }
+
+options[:series] = @report.collect_series_data(@start_time, @end_time, @interval_length);
+
+options[:credits] = false
+
+options[:xAxis] = {}
+options[:xAxis][:dateTimeLabelFormats] ||= { :day => '%b %e', :hour => '%b %e' }
+options[:xAxis][:type] ||= 'datetime'
+
+options[:yAxis] = {}
+options[:yAxis][:title] = {}
+options[:yAxis][:title][:text] = nil
+%>
+var chart = new Highcharts.Chart(<%= raw options.to_json %>);

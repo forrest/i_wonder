@@ -88,17 +88,19 @@ module IWonder
       
       assert_equal "Account.where(\"created_at >= ? AND created_at < ?\", start_time, end_time).count", @metric.collection_method
       assert_equal 2, @metric.send(:run_collection_method_from, Time.zone.now-1.day, Time.zone.now)
+      assert_equal "sum", @metric.combination_rule
 
       @metric.update_attributes(:model_counter_method => "Total Number")
-      assert_equal "Account.count", @metric.collection_method
+      assert_equal "average", @metric.combination_rule
+      
+      assert_equal "Account.where(\"created_at < ?\", end_time).count", @metric.collection_method
       assert_equal 3, @metric.send(:run_collection_method_from, Time.zone.now-1.day, Time.zone.now)
       
       @metric.update_attributes(:model_counter_scopes => ".archived")
-      assert_equal "Account.archived.count", @metric.collection_method
+      assert_equal "Account.archived.where(\"created_at < ?\", end_time).count", @metric.collection_method
       
       @metric.update_attributes(:model_counter_scopes => "archived")
-      assert_equal "Account.archived.count", @metric.collection_method
-      
+      assert_equal "Account.archived.where(\"created_at < ?\", end_time).count", @metric.collection_method
     end
     
   end
