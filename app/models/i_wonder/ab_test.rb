@@ -31,6 +31,18 @@ module IWonder
       test_group_memberships.count > 0
     end
     
+    def which_test_group?(current_controller)
+      if(current_group = get_current_group(current_controller))
+        return current_group.test_group_name
+      else
+        test_group = add_to_test_group(randomly_chosen_test_group, current_controller)
+        return test_group.test_group_name
+      end
+    end
+    
+    
+  private
+    
     def get_current_group(current_controller)
       if test_applies_to =~ /account/i
         env = current_controller.request.env
@@ -42,6 +54,23 @@ module IWonder
         session_id = current_controller.send("cookies")[COOKIE_KEY+Logging::SESSION_KEY_NAME]
         test_group_memberships.where(:member_type => "session", :member_id => session_id.to_s).first
       end
+    end
+    
+    def add_to_test_group(test_group_name, current_controller)
+      if test_applies_to =~ /account/i
+        env = current_controller.request.env
+        test_group_memberships.create!(:member_type => "account", :member_id => env[ENV_KEY]["account_id"].to_s, :test_group_name => test_group_name)
+      elsif test_applies_to =~ /user/i
+        env = current_controller.request.env
+        test_group_memberships.create!(:member_type => "user", :member_id => env[ENV_KEY]["user_id"].to_s, :test_group_name => test_group_name)
+      else
+        session_id = current_controller.send("cookies")[COOKIE_KEY+Logging::SESSION_KEY_NAME]
+        test_group_memberships.create!(:member_type => "session", :member_id => session_id.to_s, :test_group_name => test_group_name)
+      end
+    end
+    
+    def randomly_chosen_test_group
+      test_group_names[rand(test_group_names.length)]
     end
     
   end

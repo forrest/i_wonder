@@ -9,19 +9,9 @@ module IWonder
       end
       
       def which_test_group?(event_sym)
-        test = IWonder::AbTest.find_by_sym(event_sym)
-        
-        # check if the current user/session/account is already in a group
-        if(current_group = test.get_current_group(env, cookies))
-          return current_group.name
-        else
-          
-          # pick an options randomly
-        
-          # # put the user/session/account in the group
-          
-          # return result
-        end
+        ab_test = IWonder::AbTest.find_by_sym(event_sym.to_s)
+        raise "Not a valid test group" unless ab_test
+        ab_test.which_test_group?(self)        
       end
 
 
