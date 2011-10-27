@@ -122,8 +122,9 @@ You can store any additional by calling <code>report!(event_sym, options = {})</
   
 == Contributing & Reporting Issues
 
-...
+Until this is in alpha, the most helpful thing you can do is feature requests and suggestions. You can do that at http://github.com/forrest/i_wonder/issues
 
+Once in alpha, the whole thing will be more stable and have enough tests that other developers can begin to contribute.
 
 == Licensing
 
