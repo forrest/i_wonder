@@ -1,0 +1,26 @@
+<table id="ab_test_summary" cellpadding=0 cellspacing=0>
+	<thead>
+		<tr>
+			<td></td>
+			<td>Assigned</td>
+			
+			<% for ab_test_goal in @ab_test.ab_test_goals do %>
+				<td><%= ab_test_goal %></td>
+			<% end %>
+			
+		</tr>
+	</thead>
+	
+	<% for group_name in @ab_test.test_group_names do %>
+		<tr>
+			<td><%= group_name%></td>
+			<td><%= @ab_test.test_group_memberships.where(:test_group_name => group_name).count %></td>
+			
+			<% for ab_test_goal in @ab_test.ab_test_goals do %>
+				<td>-</td>
+			<% end %>
+			
+			
+		</tr>
+	<% end %>
+</table>

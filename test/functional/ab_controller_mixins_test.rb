@@ -73,4 +73,8 @@ class ABControllerMixinsTest < ActionController::TestCase
     assert_equal 1, @ab_test.test_group_memberships.count
   end
   
+  test "the element the test applies to is not available" do
+    pending
+  end
+  
 end

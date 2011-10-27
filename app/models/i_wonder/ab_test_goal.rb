@@ -35,5 +35,15 @@ module IWonder
       end
     end
     
+    def to_s
+      if tracks_event?
+        "#{event_type} occurred"
+      elsif page_view_action.present?
+        "#{page_view_controller}##{page_view_action} hit"
+      else
+        "any #{page_view_controller} hit"
+      end
+    end
+    
   end
 end

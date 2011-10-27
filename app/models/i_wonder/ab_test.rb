@@ -12,8 +12,10 @@ module IWonder
     hash_accessor :options, :test_group_names, :type => :array, :reject_blanks => true
     
     validates_presence_of :name, :on => :create, :message => "can't be blank"
+    validates_uniqueness_of :name, :on => :create, :message => "must be unique"
     validates_presence_of :sym, :on => :create, :message => "can't be blank"
     validates_format_of :sym, :with => /^[\w\d\_]+$/, :on => :create, :message => "can only contain letters, numbers and underscores"
+    validates_uniqueness_of :sym, :on => :create, :message => "must be unique"
     validates_inclusion_of :test_applies_to, :in => %w( session user account ), :on => :create, :message => "extension %s is not included in the list"
     
     validate :has_two_groups_and_a_goal

@@ -22,7 +22,7 @@
 
 	<div class="field">
 		<%= f.label :test_applies_to %>
-		<%= f.select :test_applies_to, ["Visitor", "User", "Account"] %><br/>
+		<%= f.select :test_applies_to, [["Visitor", "session"], ["User", "user"], ["Account", "account"]] %><br/>
 		<span class="description">If User or Account is selected but not available, the first option will be returned.</span>
 	</div>
 	

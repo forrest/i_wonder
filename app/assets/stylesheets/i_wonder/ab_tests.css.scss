@@ -1,3 +1,5 @@
+@import "_shared.css.scss";
+
 .main_form.ab_test { min-width:400px;
 
   #new_goal, #new_group {margin:10px 0; float:right;}
@@ -10,3 +12,11 @@
   }
 }
 
+table#ab_test_summary { background-color:$light_blue_box_background; padding:0px; margin:0px; border-style:solid; border-width:1px 1px 0 0; border-color:$light_blue_box_border;
+  thead {
+    td {background-color:#ddd;}
+  }
+  tr {
+    td {padding:5px; border-style:solid; border-width:0 0 1px 1px; border-color:$light_blue_box_border; text-align:center;}
+  }
+}
