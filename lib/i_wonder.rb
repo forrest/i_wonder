@@ -3,10 +3,10 @@ require 'i_wonder/core_ext'
 require "i_wonder/configuration"
 
 module IWonder
+  ENV_KEY = COOKIE_KEY = "i_wonder"
   
   # These are all things used just for logging events
   module Logging
-    ENV_KEY = COOKIE_KEY = "i_wonder"
     SESSION_KEY_NAME = "_session_id"
     
     autoload :Middleware, 'i_wonder/logging/middleware'

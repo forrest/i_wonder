@@ -25,6 +25,8 @@ More big plans!
 * Ability to run hourly rake tasks (rake cron)
 * Ability to run a background worker process (delayed_job)
 
+
+
 == Installation
 
 === Install the Gem
@@ -98,6 +100,8 @@ or
   
   i_wonder_for_account_id(account_id)
   
+  
+
 == Usage
   
 === Default Events
@@ -119,12 +123,19 @@ You can store any additional by calling <code>report!(event_sym, options = {})</
 === Creating AB Tests
   
 ...
+
+
+  which_ab_test_group?(__test_sym__)
+  
+===== Gotcha: If this tests against user_id or account_id, the it should be called after your set the user_id and account_id with the hooks described in the __SETUP__ section.
   
 == Contributing & Reporting Issues
 
 Until this is in alpha, the most helpful thing you can do is feature requests and suggestions. You can do that at http://github.com/forrest/i_wonder/issues
 
 Once in alpha, the whole thing will be more stable and have enough tests that other developers can begin to contribute.
+
+
 
 == Licensing
 

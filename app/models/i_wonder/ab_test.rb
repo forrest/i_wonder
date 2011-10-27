@@ -14,6 +14,7 @@ module IWonder
     validates_presence_of :name, :on => :create, :message => "can't be blank"
     validates_presence_of :sym, :on => :create, :message => "can't be blank"
     validates_format_of :sym, :with => /^[\w\d\_]+$/, :on => :create, :message => "can only contain letters, numbers and underscores"
+    validates_inclusion_of :test_applies_to, :in => %w( session user account ), :on => :create, :message => "extension %s is not included in the list"
     
     validate :has_two_groups_and_a_goal
     def has_two_groups_and_a_goal
@@ -28,6 +29,19 @@ module IWonder
    
     def started?
       test_group_memberships.count > 0
+    end
+    
+    def get_current_group(current_controller)
+      if test_applies_to =~ /account/i
+        env = current_controller.request.env
+        test_group_memberships.where(:member_type => "account", :member_id => env[ENV_KEY]["account_id"].to_s).first
+      elsif test_applies_to =~ /user/i
+        env = current_controller.request.env
+        test_group_memberships.where(:member_type => "user", :member_id => env[ENV_KEY]["user_id"].to_s).first
+      else
+        session_id = current_controller.send("cookies")[COOKIE_KEY+Logging::SESSION_KEY_NAME]
+        test_group_memberships.where(:member_type => "session", :member_id => session_id.to_s).first
+      end
     end
     
   end

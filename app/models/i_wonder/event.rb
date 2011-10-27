@@ -20,6 +20,10 @@ module IWonder
           update_all({:event_type => "return_visit"}, ["user_id = ? AND event_type = ? AND id <> ?", user_id, "new_visitor", new_visitor_event.id])
         end
         
+        
+        # TODO: merge any tests on the session id over to the original session_id
+        # remove any duplicates (going with the original)
+        
         return original_session_id
       end
       # handle_asynchronously :merge_session_to_user

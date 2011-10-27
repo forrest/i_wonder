@@ -5,15 +5,26 @@
 		<%= link_to "Delete", @ab_test, :method => :delete, :confirm => "Are you sure?" %>
 	</p>
 	
-	<% if @ab_test.started? %>
-	<% else %>
-		<p>
-			This test hasn't started yet. The following code will start putting people into groups:
-		</p>
-	<% end %>
-	
+	<h2>I wonder <%= @ab_test.name%>?</h2>
 	<p class="description">
 		<%= @ab_test.description.present? ? @ab_test.description : "no description..."%>
 	</p>
+	
+	<% if @ab_test.started? %>
+	<% else %>
+		<p>
+			This test hasn't started yet. The following code should be put somewhere in your controller or view to start putting people into groups:
+		</p>
+		
+<pre>
+case which_test_group?("<%= @ab_test.sym %>")
+<% for option_name in @ab_test.test_group_names -%>
+when "<%= option_name%>"
+	...
+<% end -%>
+end
+</pre>
+	<% end %>
+	
 	
 </div>
