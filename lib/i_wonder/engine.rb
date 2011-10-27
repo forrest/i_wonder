@@ -17,6 +17,8 @@ class Railtie < Rails::Railtie
 
   config.to_prepare do
     ApplicationController.send :include, IWonder::Logging::ActionControllerMixins
+    ApplicationController.send :include, IWonder::AbTesting::ActionControllerMixins
+    
     ActiveRecord.send :include, IWonder::Logging::ActiveRecordMixins
   end
 
