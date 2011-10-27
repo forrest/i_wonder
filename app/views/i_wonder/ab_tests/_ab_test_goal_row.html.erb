@@ -1,0 +1,23 @@
+<li class="ab_test_goal deletable_row">
+	<%= f.hidden_field :id%>
+	
+	<%= f.select :goal_type, ["Event", "Page View"], {}, :onchange => "var row = $(this).closest('li'); row.find('.options').hide(); if($(this).val()=='Event'){ row.find('#event_options').show(); }else{ row.find('#page_view_options').show(); }" %>
+	
+	<div id="page_view_options" class='options' <% unless f.object.tracks_page_view? %> style="display:none" <% end %> >
+		<%= f.text_field :page_view_controller, :placeholder => "controller", :size => 20 %>
+		
+		<%= f.text_field :page_view_action, :placeholder => "action (optional)", :size => 20 %>
+	</div>
+	
+	<div id="event_options" class='options' <% unless f.object.tracks_event? %> style="display:none" <% end %> >
+		<%= f.text_field :event_type, :placeholder => "event name" %>
+	</div>
+	
+	<% if f.object.new_record? %>
+		<%= link_to_function "", "$(this).closest('li').remove();", :class => "ui-icon ui-icon-circle-close delete" %>
+	<% else%>
+		<%= f.hidden_field :_destroy, :class => "hidden_destroy" %>
+		<%= link_to_function "", "nested_delete(this);", :class => "ui-icon ui-icon-circle-close delete" %>
+	<% end %>
+	
+</li>

@@ -1,0 +1,9 @@
+<%= link_to_function "+ Add Group", "$('#ab_test_groups').append(\"#{j render(:partial => "ab_test_group_row")}\");", :id => "new_goal" %>
+
+<h4>Test Groups</h4>
+
+<ul id="ab_test_groups">
+	<%= render :partial => "ab_test_group_row", :collection => f.object.test_group_names, :as => :test_group_name %>
+</ul>
+
+<br style="clear:both"/>

@@ -1,0 +1,12 @@
+.main_form.ab_test { min-width:400px;
+
+  #new_goal, #new_group {margin:10px 0; float:right;}
+
+  #ab_test_goals, #ab_test_groups { list-style:decimal; padding:0 0 0 25px; margin:0;
+    li { padding:0px; clear:both;
+      .options {display:inline-block; margin-left:10px;}
+      .delete {float:right;}
+    }
+  }
+}
+

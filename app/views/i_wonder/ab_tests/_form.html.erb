@@ -1,0 +1,50 @@
+<%= form_for @ab_test, :html => {:class => "main_form ab_test"} do |f| %>
+	<% if @ab_test.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ab_test.errors.count, "error") %> prohibited this test from being saved:</h2>
+
+      <ul>
+      <% @ab_test.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+	
+	<div class="field">
+		<b>I wonder</b> <%= f.text_field :name, :placeholder => "test name...", :size => 50 %><b>?</b>
+	</div>
+	
+	<div class="field">
+		<%= f.label :description %>
+		<%= f.text_area :description, :rows => 3, :cols => 50%>
+	</div>
+
+	<div class="field">
+		<%= f.label :test_applies_to %>
+		<%= f.select :test_applies_to, ["Visitor", "User", "Account"] %><br/>
+		<span class="description">If User or Account is selected but not available, the first option will be returned.</span>
+	</div>
+	
+	
+	<div class="field">
+		<%= f.label :sym, "Code reference symbol" %>
+		<%= f.text_field :sym, :size => 10 %>
+		<span class="description">letters numbers and underscores. NO spaces!</span>
+	</div>
+	
+	<hr/>
+	
+	<%= render :partial => "ab_test_groups", :locals => {:f => f} %>
+	
+	<hr/>
+
+	<%= render :partial => "ab_test_goals", :locals => {:f => f} %>
+	
+	<hr/>
+	
+	<div class="field">
+		<%= f.submit %>
+	</div>
+	
+<% end %>

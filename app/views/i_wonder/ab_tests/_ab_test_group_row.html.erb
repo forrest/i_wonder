@@ -1,0 +1,5 @@
+<li class="ab_test_group deletable_row">
+	<%= text_field_tag "ab_test[test_group_names][]", (defined?(test_group_name) ? test_group_name : ""), :placeholder => "Name..." %>
+		
+	<%= link_to_function "", "$(this).closest('li').remove();", :class => "ui-icon ui-icon-circle-close delete" %>
+</li>

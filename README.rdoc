@@ -102,9 +102,13 @@ or
   
 === Default Events
   
-When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be turned into a :return_visit if the user has an earlier dated :new_visitor event on their account. :hit, :new_visitor and :return_visit events will be logged automatically. You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller. You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code> or <code>:account_id</code> in the options, if you want them recorded.
+:hit, :new_visitor and :return_visit events will be logged automatically. 
+
+When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be turned into a :return_visit if the user has an earlier dated :new_visitor event on their account. The amount fo time that must past for a :return_visit event is going to be configurable once I get to it...
 
 === Custom Events
+
+You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller. You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code> or <code>:account_id</code> in the options, if you want them recorded.
 
 ...
 

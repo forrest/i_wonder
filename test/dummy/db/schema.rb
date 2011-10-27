@@ -34,10 +34,18 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "i_wonder_ab_test_goals", :force => true do |t|
+    t.integer "ab_test_id"
+    t.text    "options"
+  end
+
+  add_index "i_wonder_ab_test_goals", ["ab_test_id"], :name => "index_i_wonder_ab_test_goals_on_ab_test_id"
+
   create_table "i_wonder_ab_tests", :force => true do |t|
     t.string   "name"
     t.string   "sym"
     t.text     "description"
+    t.string   "test_applies_to"
     t.text     "options"
     t.text     "test_group_data"
     t.datetime "created_at"

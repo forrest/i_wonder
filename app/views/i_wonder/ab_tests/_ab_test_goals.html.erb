@@ -1,0 +1,13 @@
+<%= f.fields_for :ab_test_goals, IWonder::AbTestGoal.new, :child_index => "new_row_id" do |f2|%>
+	<%= link_to_function "+ Add Goal", "$('#ab_test_goals').append(new_row_inserter(\"#{j render(:partial => "ab_test_goal_row", :locals => {:f => f2})}\"));", :id => "new_goal" %>
+<% end %>
+
+<h4>Goals</h4>
+
+<ul id="ab_test_goals">
+	<%= f.fields_for :ab_test_goals do |f2|%>
+		<%= render :partial => "ab_test_goal_row", :locals => {:f => f2} %>
+	<% end %>
+</ul>
+
+<br style="clear:both"/>

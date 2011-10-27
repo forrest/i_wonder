@@ -1,0 +1,19 @@
+<div class="show">
+	<p>
+		<%= link_to "Edit", edit_ab_test_path(@ab_test) %>
+		|
+		<%= link_to "Delete", @ab_test, :method => :delete, :confirm => "Are you sure?" %>
+	</p>
+	
+	<% if @ab_test.started? %>
+	<% else %>
+		<p>
+			This test hasn't started yet. The following code will start putting people into groups:
+		</p>
+	<% end %>
+	
+	<p class="description">
+		<%= @ab_test.description.present? ? @ab_test.description : "no description..."%>
+	</p>
+	
+</div>
