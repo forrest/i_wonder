@@ -10,7 +10,7 @@ module IWonder
    end
   
   class Configuration
-    attr_accessor :keep_hits_for, :only_log_hits_on_200, :back_to_app_link, :app_name
+    attr_accessor :keep_hits_for, :only_log_hits_on_200, :back_to_app_link, :app_name, :return_visit_interval
     attr_reader :controllers_to_ignore
     
     def initialize
@@ -19,6 +19,7 @@ module IWonder
       @only_log_hits_on_200 = true
       @back_to_app_link = "/"
       @app_name = "My App"
+      @return_visit_interval = 1.hour
     end
     
     def controllers_to_ignore=(new_controllers)

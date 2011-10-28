@@ -86,7 +86,21 @@ class MiddlewareTest < ActionDispatch::IntegrationTest
   end
   
   test "return_visit_gets set correctly" do
-    pending "not implemented yet"
+    IWonder::Event.destroy_all
+    
+    Timecop.travel(Time.zone.now - 3.hours) do
+      get "/test_without_report"
+      assert_equal 2, IWonder::Event.count
+      
+      get "/test_without_report"
+      assert_equal 3, IWonder::Event.count
+    end
+    
+    get "/test_without_report"
+    assert_equal 5, IWonder::Event.count
+    
+    assert_include IWonder::Event.all.collect(&:event_type), "return_visit"
+    
   end
   
 end

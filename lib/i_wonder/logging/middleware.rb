@@ -2,6 +2,7 @@ module IWonder
   module Logging
     class Middleware
       NO_USER_KEY = "_no_user"
+      LAST_HIT_TIME = "_last_hit"
       BOT_REGEX = /msnbot|yahoo|slurp|googlebot/
       
       def initialize(app)
@@ -27,6 +28,7 @@ module IWonder
       
       def process_env(env)
         check_for_new_visitor(env) # this will set the i_wonder_session_id if blank. This session is needed later
+        check_for_return_visit(env)
         log_hit(env)
         merge_session_to_user(env)
         generate_any_reported_events(env)
@@ -38,6 +40,20 @@ module IWonder
         if should_log_hit_or_new_visitor?
           env[ENV_KEY]["new_events"] << {:event_type => "hit"}
         end
+      end
+      
+      def check_for_return_visit(env)
+        env[ENV_KEY]["new_events"] ||= []
+        
+        #is there a last_hit key
+        if cookies(env)[COOKIE_KEY+LAST_HIT_TIME]
+          previous_hit = Time.zone.parse(cookies(env)[COOKIE_KEY+LAST_HIT_TIME])
+          if previous_hit + IWonder.configuration.return_visit_interval < Time.zone.now
+            env[ENV_KEY]["new_events"] << {:event_type => "return_visit"}
+          end
+        end
+        
+        cookies(env).permanent[COOKIE_KEY+LAST_HIT_TIME] = Time.zone.now.to_s
       end
       
       def check_for_new_visitor(env)
