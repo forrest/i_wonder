@@ -12,11 +12,7 @@ Key Differences of IWonder:
 - Each hit and visitor comes with a referrer and IP code. Because that events will be transferred to the user when they signup, you can see which campaigns are resulting in actual signups and paid conversions.
 - Because the session events get added to the user when they log in, you avoid false positives on marketing analytics from visitors returning on different devices. If your application has a mobile interface, this basically avoids all your users being logged as visitors twice.
 
-More big plans!
-
-- Long term campaign tracking interface (the events already get logged, but this will make it easier to see results)
-- E-mail open tracking (for application generated e-mails like the 'Welcome E-mail')
-- Feature request buttons. - details coming soon
+More big plans! Check the issues list for addition features being worked on. Feel free to add your own :-)
 
 == Requirements
 
@@ -131,10 +127,13 @@ You can store any additional by calling <code>report!(event_sym, options = {})</
   
 == Contributing & Reporting Issues
 
-Until this is in alpha, the most helpful thing you can do is feature requests and suggestions. You can do that at http://github.com/forrest/i_wonder/issues
+Report a bug at http://github.com/forrest/i_wonder/issues
 
-Once in alpha, the whole thing will be more stable and have enough tests that other developers can begin to contribute.
+Request a feature at http://github.com/forrest/i_wonder/issues
 
+Contribute code by picking something off the feature request list at http://github.com/forrest/i_wonder/issues
+
+Contribute time by helping with some documentation at http://github.com/forrest/i_wonder/wiki
 
 
 == Licensing
