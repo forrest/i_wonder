@@ -17,7 +17,7 @@
 			<td><%= @ab_test.test_group_memberships.where(:test_group_name => group_name).count %></td>
 			
 			<% for ab_test_goal in @ab_test.ab_test_goals do %>
-				<td>-</td>
+				<td><%= @ab_test.get_results_for(group_name, ab_test_goal) %></td>
 			<% end %>
 			
 			

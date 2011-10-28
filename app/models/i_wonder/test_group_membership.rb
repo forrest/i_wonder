@@ -7,5 +7,6 @@ module IWonder
     validates_presence_of :member_id, :on => :create, :message => "can't be blank"
     
     validates_uniqueness_of :ab_test_id, :on => :create, :message => "must be unique for this member", :scope => [:member_type, :member_id]
+    
   end
 end

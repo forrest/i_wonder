@@ -21,18 +21,18 @@ module IWonder
       goal_type == "Page View"
     end
     
-    def goal_scope
+    def add_goal_to_query(scoped_statement)
       if tracks_event?
-        Event.where(:event_type => event_type)
+        sc = scoped_statement.where("i_wonder_events.event_type = ?", event_type)
       else
-        sc = Event.where(:event_type => "hit", :controller => page_view_controller)
+        sc = scoped_statement.where("i_wonder_events.event_type = ? AND controller = ?", "hit", page_view_controller)
         
         if page_view_action.present?
-          sc = sc.where(:action => page_view_action)
+          sc = sc.where("i_wonder_events.action = ?", page_view_action)
         end
-        
-        sc
       end
+      
+      sc.where("i_wonder_events.created_at > ?", self.ab_test.created_at) # event had to come after goal
     end
     
     def to_s

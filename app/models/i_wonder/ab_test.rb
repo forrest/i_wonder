@@ -42,6 +42,28 @@ module IWonder
       end
     end
     
+    def assigned_count(test_group_name)
+      self.test_group_memberships.where(:test_group_name => test_group_name).count
+    end
+    
+    def get_results_for(test_group_name, ab_test_goal)
+      scoped_test_group_memberships  = self.test_group_memberships.where(:test_group_name => test_group_name).scoped
+
+      if test_applies_to =~ /account/i
+        event_membership_key = "account_id"
+      elsif test_applies_to =~ /user/i
+        event_membership_key = "user_id"
+      else
+        event_membership_key = "session_id"
+      end
+      
+      scoped_groups_with_events = scoped_test_group_memberships.joins("LEFT JOIN i_wonder_events ON i_wonder_events.#{event_membership_key} = i_wonder_test_group_memberships.member_id")
+      
+      scoped_groups_with_goal_events = ab_test_goal.add_goal_to_query(scoped_groups_with_events)
+      
+      scoped_groups_with_goal_events.count
+    end
+    
     
   private
     
