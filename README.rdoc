@@ -2,128 +2,16 @@
 
 Flexible Analytics, and Testing for every corner of your rails application. I read "The Lean Startup" and got inspired. There were a few good solutions, but none of them quite did what I was looking for. I highly recommend you check out Vanity (http://vanity.labnotes.org/) as it is a drop-in solution for many rails apps.
 
-Key Differences of IWonder:
-
-- Events get tracked by session, as well as an optional user and/or account. This allows the tracking of a users history.
-- Tests can be performed against a session (non-user), logged in user, or an entire account. For account based apps, having different versions for different users can be bad.
-- Data is collected periodically. Lots of useful scenerios for this. (info get's deleted, overwritten, etc)
-- Different reports (and some metrics) can be setup and changed without having to modify your code. 
-- Different reports can be generated without coding knowledge.
-- Each hit and visitor comes with a referrer and IP code. Because that events will be transferred to the user when they signup, you can see which campaigns are resulting in actual signups and paid conversions.
-- Because the session events get added to the user when they log in, you avoid false positives on marketing analytics from visitors returning on different devices. If your application has a mobile interface, this basically avoids all your users being logged as visitors twice.
-
-More big plans! Check the issues list for addition features being worked on. Feel free to add your own :-)
-
-== Requirements
-
-* Due to performance optimization IWonder must be used with an SQL style DB currently.
-* Rails 3.1 or higher
-* Ability to run hourly rake tasks (rake cron)
-* Ability to run a background worker process (delayed_job)
-
-
+More information can be found at https://github.com/forrest/i_wonder/wiki
 
 == Installation
 
-=== Install the Gem
-
-Add to your <code>Gemfile</code>:
-
-  gem "i_wonder"
-  
-and install:
-  
-  bundle install
-  
-=== Migrate the DB
-
-Generate the migration files and migrate your database:
-
-  rake i_wonder:install:migrations
-  rake db:migrate
-
-
-=== Create the dashboard controller
-
-Add the engine to your routes. This is where the dashboard will be hosted
-
-  Rails.application.routes.draw do
-    ...
-    mount IWonder::Engine => "/super_analytics_engine"
-  end
-
-=== Setting up the hourly cron task
-
-This gem hooks into the "<code>rake cron</code>" request. It can't take snapshots of your metrics any faster than this cron is run. We recommend every hour.
-This will be run automatically if you are hosted on Heroku and have the 'hourly cron' add-on enabled.
-
-
-=== Install Dependecies
-
-This Gem requires the Delayed::Job gem. Installation and configuration instructions can be found at http://github.com/tobi/delayed_job.
-
-We also require the highcharts javascript file in your applications asset path. We don't include it because of licencing reasons. It's free for testing and development. You can find it at http://www.highcharts.com/
-
-
-=== Security
-
-IWonder's controllers will run any <code>:before_filters</code> you have set in your application controller. You can easily check for a password or admin status there.
-
-=== Options & Configurations
-
-You can choose to navigate directly to the dashboard. If you want to include a link on your admin page to the i_wonder dashboard, your can access the url with <code>i_wonder.root_url</code> such as:
-
-  <%= link_to "Go to analytics >", i_wonder.root_url %>
-
-
-If you want to configure this gem, add this to an initializer.
-
-  IWonder.configure do |c|
-    c.controllers_to_ignore = []   # These are all the controllers which don't log any events (i_wonder is also ignored)
-    c.only_log_hits_on_200 = true   # By default hits and new visitors won't be logged on anything but a 200 or 304 (not modified). Your custom events will still be recorded.
-    c.back_to_app_link = "/" # this is the link hitting the home button in IWonder will take you to.
-    c.app_name = "My App"
-  end
-
-
-=== Add hooks for user_id and account_id
-
-This gem will track the visitor with a permanent cookie (will remember them next visit). However, it can also track users and accounts. Simply call one or both of these methods anywhere in the controller.
-
-  i_wonder_for_user_id(user_id)
-
-or
-  
-  i_wonder_for_account_id(account_id)
-  
-  
+You can install IWonder with almost no change to your code in 10-15 minutes. Check it out at http://github.com/forrest/i_wonder/wiki/Installation
 
 == Usage
   
-=== Default Events
+Usage instructions can be found at https://github.com/forrest/i_wonder/wiki/Usage
   
-:hit, :new_visitor and :return_visit events will be logged automatically. 
-
-When a user get's added part way through, the :user_id will get filled in for all the previous events for that session. The :new_visitor event for the session will also be turned into a :return_visit if the user has an earlier dated :new_visitor event on their account. The amount fo time that must past for a :return_visit event is going to be configurable once I get to it...
-
-=== Custom Events
-
-You can store any additional by calling <code>report!(event_sym, options = {})</code> in the controller. You can also log an event from a model with the same method <code>report!(event_sym, options = {})</code>, but you will need to provide the <code>:user_id</code> or <code>:account_id</code> in the options, if you want them recorded.
-
-...
-
-=== Creating Metrics & Reports
-
-...
-
-=== Creating AB Tests
-  
-...
-
-
-  which_ab_test_group?(__test_sym__)
-  
-===== Gotcha: If this tests against user_id or account_id, the it should be called after your set the user_id and account_id with the hooks described in the __SETUP__ section.
   
 == Contributing & Reporting Issues
 
