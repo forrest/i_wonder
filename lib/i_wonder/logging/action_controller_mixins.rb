@@ -2,7 +2,7 @@ module IWonder
   module Logging
     module ActionControllerMixins
 
-      def report!(event_sym, options = {})        
+      def report!(event_sym, options = {})
         options ||= {}
         options[:event_type] = event_sym.to_s # it will get converted when stored anyways.
         
