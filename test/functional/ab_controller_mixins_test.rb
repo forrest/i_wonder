@@ -77,4 +77,8 @@ class ABControllerMixinsTest < ActionController::TestCase
     pending
   end
   
+  test "which_test_group returns false when test is missing" do
+    assert !@controller.which_test_group?("non-existant test")
+  end
+  
 end
