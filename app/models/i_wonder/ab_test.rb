@@ -1,12 +1,12 @@
 module IWonder
   class AbTest < ActiveRecord::Base
-    attr_accessible :name, :sym, :description, :ab_test_goals_attributes, :test_applies_to, :test_group_names
+    attr_accessible :name, :sym, :description, :ab_test_goals_attributes, :test_applies_to, :test_group_names, :options, :test_group_data
     serialize :options, Hash
     serialize :test_group_data, Hash
     
-    has_many :test_group_memberships, :dependent => :destroy
+    has_many :test_group_memberships, :dependent => :destroy, :foreign_key => "ab_test_sym", :primary_key => :sym
 
-    has_many :ab_test_goals, :dependent => :destroy
+    has_many :ab_test_goals, :dependent => :destroy, :foreign_key => "ab_test_sym", :primary_key => :sym
     accepts_nested_attributes_for :ab_test_goals, :allow_destroy => true
     
     hash_accessor :options, :test_group_names, :type => :array, :reject_blanks => true
@@ -28,7 +28,12 @@ module IWonder
         errors.add(:base, "Must have atleast one goal")
       end
     end
-   
+      
+    after_save :save_to_file
+    def save_to_file
+      AbTesting::Loader.save_ab_test(self)
+    end
+      
     def started?
       test_group_memberships.count > 0
     end
@@ -63,7 +68,26 @@ module IWonder
       
       scoped_groups_with_goal_events.count
     end
+
     
+    def from_xml(xml)
+      [super]
+      
+      hash = Hash.from_xml(xml)
+      
+      hash["ab_test"]["ab_test_goals"].each{|ab_test_goal_hash|
+        self.ab_test_goals.build(ab_test_goal_hash)
+      }
+    end
+    
+    def started_at
+      test_group_memberships.minimum(:created_at)
+    end
+    
+    def self.find_or_load_by_sym(sym)
+      ab_test = self.find_by_sym(sym)
+      ab_test ||= AbTesting::Loader.load_sym(sym)
+    end
     
   private
     

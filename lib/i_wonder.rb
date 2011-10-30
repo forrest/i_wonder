@@ -16,6 +16,7 @@ module IWonder
   
   module AbTesting
     autoload :ActionControllerMixins, 'i_wonder/ab_testing/action_controller_mixins'
+    autoload :Loader, 'i_wonder/ab_testing/ab_test_loader'
   end
 
 

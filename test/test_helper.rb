@@ -14,3 +14,5 @@ require "factory_girl_rails"
 Dir.open(File.expand_path("factories/", File.dirname(__FILE__))).each{|file_name|
   require File.expand_path("factories/#{file_name}", File.dirname(__FILE__)) if file_name =~ /.*_factory.rb/
 }
+
+TEST_ASSETS = File.expand_path("test_assets", File.dirname(__FILE__))

@@ -1,8 +1,13 @@
 module IWonder
   class Engine < Rails::Engine
     # This is for the mounting the engine ===========
-    
     isolate_namespace IWonder
+    
+    initializer "i_wonder.loading_tests" do |app|
+      ActiveRecord::Base.send :include, HashAccessor # this is to avoid load order issues from the required gem
+      AbTesting::Loader.load_all
+    end
+    
   end
 end
 

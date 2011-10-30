@@ -3,7 +3,11 @@
 <h4>Test Groups</h4>
 
 <ul id="ab_test_groups">
-	<%= render :partial => "ab_test_group_row", :collection => f.object.test_group_names, :as => :test_group_name %>
+	<% if f.object.test_group_names.empty? %> 
+		<%= render :partial => "ab_test_group_row", :collection => ["", ""], :as => :test_group_name %>
+	<% else %>
+		<%= render :partial => "ab_test_group_row", :collection => f.object.test_group_names, :as => :test_group_name %>
+	<% end %>
 </ul>
 
 <br style="clear:both"/>

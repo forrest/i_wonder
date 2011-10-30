@@ -1,8 +1,9 @@
 module IWonder
   class AbTestGoal < ActiveRecord::Base
-    belongs_to :ab_test
-    
     attr_accessible :goal_type, :event_type, :page_view_controller, :page_view_action
+    
+    belongs_to :ab_test, :foreign_key => "ab_test_sym", :primary_key => :sym
+    
     serialize :options, Hash
     hash_accessor :options, :goal_type, :default => "Event"
     hash_accessor :options, :event_type
@@ -32,7 +33,7 @@ module IWonder
         end
       end
       
-      sc.where("i_wonder_events.created_at > ?", self.ab_test.created_at) # event had to come after goal
+      sc.where("i_wonder_events.created_at > ?", self.ab_test.started_at) # event had to come after goal
     end
     
     def to_s

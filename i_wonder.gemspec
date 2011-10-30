@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.1.1"
   s.add_dependency "jquery-rails"
   s.add_dependency 'delayed_job', '~> 2.1'
-  s.add_dependency 'hash_accessor'
+  s.add_dependency 'hash_accessor', '~> 1.0'
 
 
   s.add_development_dependency "factory_girl_rails"
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry"
   s.add_development_dependency "sass", '~> 3.1'
   s.add_development_dependency "timecop"
+  s.add_development_dependency "mocha"
   
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc"]

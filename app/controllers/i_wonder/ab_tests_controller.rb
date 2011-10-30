@@ -18,6 +18,7 @@ module IWonder
       @ab_test = AbTest.new(params[:ab_test])
 
       if @ab_test.save
+        AbTesting::Loader.save_ab_tests
         redirect_to @ab_test, :notice => "Successfully created ABTest"
       else
         render "new"
@@ -33,6 +34,7 @@ module IWonder
       @ab_test = AbTest.find(params[:id])
 
       if @ab_test.update_attributes(params[:ab_test])
+        AbTesting::Loader.save_ab_tests
         redirect_to @ab_test, :notice => "Successfully updated ABTest"
       else
         render "edit"

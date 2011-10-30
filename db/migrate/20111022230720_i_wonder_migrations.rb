@@ -73,16 +73,16 @@ class IWonderMigrations < ActiveRecord::Migration
     add_index :i_wonder_ab_tests, :sym
     
     create_table :i_wonder_ab_test_goals do |t|
-      t.integer :ab_test_id
+      t.string :ab_test_sym
       t.text :options # serialized
     end
-    add_index :i_wonder_ab_test_goals, :ab_test_id
+    add_index :i_wonder_ab_test_goals, :ab_test_sym
     
     
     
     
     create_table :i_wonder_test_group_memberships do |t|
-      t.integer :ab_test_id
+      t.string :ab_test_sym
       t.string :test_group_name
       
       t.string :member_type
@@ -90,7 +90,7 @@ class IWonderMigrations < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :i_wonder_test_group_memberships, :ab_test_id
+    add_index :i_wonder_test_group_memberships, :ab_test_sym
     add_index :i_wonder_test_group_memberships, :test_group_name
     add_index :i_wonder_test_group_memberships, [:member_type, :member_id], :name => "i_wonder_test_group_memberships_member"
    

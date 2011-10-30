@@ -35,11 +35,11 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "i_wonder_ab_test_goals", :force => true do |t|
-    t.integer "ab_test_id"
-    t.text    "options"
+    t.string "ab_test_sym"
+    t.text   "options"
   end
 
-  add_index "i_wonder_ab_test_goals", ["ab_test_id"], :name => "index_i_wonder_ab_test_goals_on_ab_test_id"
+  add_index "i_wonder_ab_test_goals", ["ab_test_sym"], :name => "index_i_wonder_ab_test_goals_on_ab_test_sym"
 
   create_table "i_wonder_ab_tests", :force => true do |t|
     t.string   "name"
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
   end
 
   create_table "i_wonder_test_group_memberships", :force => true do |t|
-    t.integer  "ab_test_id"
+    t.string   "ab_test_sym"
     t.string   "test_group_name"
     t.string   "member_type"
     t.string   "member_id"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20111023231947) do
     t.datetime "updated_at"
   end
 
-  add_index "i_wonder_test_group_memberships", ["ab_test_id"], :name => "index_i_wonder_test_group_memberships_on_ab_test_id"
+  add_index "i_wonder_test_group_memberships", ["ab_test_sym"], :name => "index_i_wonder_test_group_memberships_on_ab_test_sym"
   add_index "i_wonder_test_group_memberships", ["member_type", "member_id"], :name => "i_wonder_test_group_memberships_member"
   add_index "i_wonder_test_group_memberships", ["test_group_name"], :name => "index_i_wonder_test_group_memberships_on_test_group_name"
 
