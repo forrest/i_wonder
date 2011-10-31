@@ -34,6 +34,11 @@ module IWonder
       AbTesting::Loader.save_ab_test(self)
     end
       
+    after_destroy :remove_file
+    def remove_file
+      AbTesting::Loader.remove_file_for(self)
+    end
+      
     def started?
       test_group_memberships.count > 0
     end
@@ -69,7 +74,6 @@ module IWonder
       scoped_groups_with_goal_events.count
     end
 
-    
     def from_xml(xml)
       [super]
       
@@ -80,6 +84,8 @@ module IWonder
       self.test_group_data = {} if self.test_group_data.is_a?(String)
       self.options.symbolize_keys!
       self.test_group_data.symbolize_keys!
+      
+      self.ab_test_goals.each(&:mark_for_destruction)
       
       hash = Hash.from_xml(xml)
       hash["ab_test"]["ab_test_goals"].each{|ab_test_goal_hash|
