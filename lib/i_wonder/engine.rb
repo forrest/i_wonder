@@ -4,8 +4,12 @@ module IWonder
     isolate_namespace IWonder
     
     initializer "i_wonder.loading_tests" do |app|
-      ActiveRecord::Base.send :include, HashAccessor # this is to avoid load order issues from the required gem
-      AbTesting::Loader.load_all
+      
+      # can't load if it's migrating the db
+      unless ( File.basename($0) == "rake" && ARGV.include?("db:migrate") )
+        ActiveRecord::Base.send :include, HashAccessor # this is to avoid load order issues from a required gem
+        AbTesting::Loader.load_all
+      end
     end
     
   end
