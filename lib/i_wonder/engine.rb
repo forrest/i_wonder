@@ -28,7 +28,7 @@ class Railtie < Rails::Railtie
     ApplicationController.send :include, IWonder::Logging::ActionControllerMixins
     ApplicationController.send :include, IWonder::AbTesting::ActionControllerMixins
     
-    ActiveRecord.send :include, IWonder::Logging::ActiveRecordMixins
+    ActiveRecord::Base.send :include, IWonder::Logging::ActiveRecordMixins
   end
 
 end
