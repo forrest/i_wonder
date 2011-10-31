@@ -14,12 +14,14 @@ module IWonder
       end
       
       def self.load_all
-        Dir.open(AB_TEST_DATA_DIR) do |dir|
-          dir.each{|file_name|
-            if file_name =~ /(.+).xml/
-              load_sym($1)
-            end
-          }
+        if File.exists?(I_WONDER_DATA_DIR) and File.exists?(AB_TEST_DATA_DIR)
+          Dir.open(AB_TEST_DATA_DIR) do |dir|
+            dir.each{|file_name|
+              if file_name =~ /(.+).xml/
+                load_sym($1)
+              end
+            }
+          end
         end
       end
       
