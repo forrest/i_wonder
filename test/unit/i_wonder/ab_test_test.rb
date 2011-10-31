@@ -6,7 +6,7 @@ module IWonder
   class AbTestTest < ActiveSupport::TestCase
   
     test "counting results" do
-      @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "blah", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}}, :test_applies_to => "session")
+      @ab_test = IWonder::AbTest.create(:name => "Unique Test 1", :sym => "unique_sym_1", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}}, :test_applies_to => "session")
       assert_valid @ab_test
       ab_test_goal = @ab_test.ab_test_goals.first
 

@@ -1,6 +1,6 @@
 module IWonder
   class AbTestGoal < ActiveRecord::Base
-    attr_accessible :goal_type, :event_type, :page_view_controller, :page_view_action
+    attr_accessible :goal_type, :event_type, :page_view_controller, :page_view_action, :options
     
     belongs_to :ab_test, :foreign_key => "ab_test_sym", :primary_key => :sym
     

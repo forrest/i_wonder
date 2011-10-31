@@ -73,20 +73,23 @@ module IWonder
     def from_xml(xml)
       [super]
       
-      hash = Hash.from_xml(xml)
+      # make sure it's not blank. Then make sure it's a hash. Then Make sure it's symbolized.
+      self.options ||= {}
+      self.test_group_data ||= {}
+      self.options = {} if self.options.is_a?(String)
+      self.test_group_data = {} if self.test_group_data.is_a?(String)
+      self.options.symbolize_keys!
+      self.test_group_data.symbolize_keys!
       
+      hash = Hash.from_xml(xml)
       hash["ab_test"]["ab_test_goals"].each{|ab_test_goal_hash|
+        ab_test_goal_hash["options"].symbolize_keys!
         self.ab_test_goals.build(ab_test_goal_hash)
       }
     end
     
     def started_at
       test_group_memberships.minimum(:created_at)
-    end
-    
-    def self.find_or_load_by_sym(sym)
-      ab_test = self.find_by_sym(sym)
-      ab_test ||= AbTesting::Loader.load_sym(sym)
     end
     
   private

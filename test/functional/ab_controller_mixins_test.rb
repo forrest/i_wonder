@@ -4,6 +4,8 @@ class ABControllerMixinsTest < ActionController::TestCase
   tests TestController
 
   def setup
+    IWonder::AbTest.delete_all
+    
     @controller.instance_eval do
       cookies[IWonder::COOKIE_KEY+IWonder::Logging::SESSION_KEY_NAME] = "2"
       i_wonder_for_user_id("3")

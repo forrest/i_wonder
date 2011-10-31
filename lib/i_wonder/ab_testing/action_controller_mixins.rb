@@ -9,11 +9,10 @@ module IWonder
       end
       
       def which_test_group?(event_sym)
-        ab_test = IWonder::AbTest.find_or_load_by_sym(event_sym.to_s)
+        ab_test = IWonder::AbTest.find_by_sym(event_sym.to_s)
         return false unless ab_test
-        ab_test.which_test_group?(self)        
+        ab_test.which_test_group?(self)
       end
-
 
     end
   end
