@@ -5,8 +5,7 @@ module IWonder
     
     initializer "i_wonder.loading_tests" do |app|
       
-      # can't load if it's migrating the db. Also, heroku fails on assets:precompile because env isn't loaded yet.
-      unless ( File.basename($0) == "rake" && (ARGV.include?("db:migrate") or ARGV.include?("assets:precompile")) )
+      unless File.basename($0) == "rake" # don't run on rake tasks (migration and asset:precompile have cause lot's of problems)
         ActiveRecord::Base.send :include, HashAccessor # this is to avoid load order issues from a required gem
         AbTesting::Loader.load_all
       end
