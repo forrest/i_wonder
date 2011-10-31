@@ -83,4 +83,13 @@ class ABControllerMixinsTest < ActionController::TestCase
     assert !@controller.which_test_group?("non-existant test")
   end
   
+  test "forcing a choice with paramteres" do
+    @ab_test = IWonder::AbTest.create(:name => "Override Test", :sym => "override_test", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}}, :test_applies_to => "session")
+    assert_valid @ab_test
+    
+    @controller.params[:_force_ab_test] = "override_test"
+    @controller.params[:_to_option] = "yah, it worked!"
+    assert_equal "yah, it worked!", @controller.which_test_group?("override_test")
+  end
+  
 end

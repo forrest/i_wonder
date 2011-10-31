@@ -13,8 +13,8 @@ case which_test_group?("<%= @ab_test.sym %>")
 <% for option_name in @ab_test.test_group_names -%>
 when "<%= option_name%>"
 	...
+<% end -%>
 else
 	"Test Not Found"
-<% end -%>
 end
 </pre>

@@ -7,3 +7,5 @@ test/dummy/log/*.log
 test/dummy/tmp/
 Gemfile.lock
 test/dummy/.sass-cache
+test/dummy/i_wonder
+
