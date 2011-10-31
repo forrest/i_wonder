@@ -75,6 +75,20 @@ class ABControllerMixinsTest < ActionController::TestCase
     assert_equal 1, @ab_test.test_group_memberships.count
   end
   
+  test "which_test_group doesn't barf on missing member" do
+    @ab_test = IWonder::AbTest.create(:name => "Blah Test 3", :sym => "blah 3", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}})
+    @ab_test.update_attribute(:test_applies_to, "session")
+    
+    @controller.instance_eval do
+      cookies[IWonder::COOKIE_KEY+IWonder::Logging::SESSION_KEY_NAME] = nil
+      cookies.delete(IWonder::COOKIE_KEY+IWonder::Logging::SESSION_KEY_NAME)
+    end
+    
+    assert_equal 0, @ab_test.test_group_memberships.count
+    assert @controller.which_test_group?("blah 3").present?, "something should still be returned"
+    assert_equal 0, @ab_test.test_group_memberships.count, "Shuold not have made a memberhsip"
+  end
+  
   test "the element the test applies to is not available" do
     pending
   end

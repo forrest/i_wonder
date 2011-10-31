@@ -47,7 +47,13 @@ module IWonder
       if(current_group = get_current_group(current_controller))
         return current_group.test_group_name
       else
-        test_group = add_to_test_group(randomly_chosen_test_group, current_controller)
+        begin
+          test_group = add_to_test_group(randomly_chosen_test_group, current_controller)
+        rescue Exception => e
+          # If there is some error, just return a randome option. Better not to crash
+          # TODO: this should warn developer somehow
+          return randomly_chosen_test_group
+        end
         return test_group.test_group_name
       end
     end
