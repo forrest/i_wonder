@@ -77,6 +77,8 @@ module IWonder
       
       scoped_groups_with_goal_events = ab_test_goal.add_goal_to_query(scoped_groups_with_events)
       
+      scoped_groups_with_events = scoped_groups_with_events.group("i_wonder_test_group_memberships.member_id")
+      
       scoped_groups_with_goal_events.count
     end
 

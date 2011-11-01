@@ -14,7 +14,7 @@ class ABControllerMixinsTest < ActionController::TestCase
   end
 
   test "fetching the correct group" do
-    @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "blah", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}})
+    @ab_test = Factory(:ab_test)
     @ab_test.update_attribute(:test_applies_to, "session")
     assert_valid @ab_test
     
@@ -40,7 +40,7 @@ class ABControllerMixinsTest < ActionController::TestCase
   end  
   
   test "adding to test groups" do
-    @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "blah", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}})
+    @ab_test = Factory(:ab_test)
     @ab_test.update_attribute(:test_applies_to, "session")
     assert_valid @ab_test
     
@@ -60,23 +60,23 @@ class ABControllerMixinsTest < ActionController::TestCase
   end
 
   test "if which_test_group works" do
-    @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "blah", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}})
+    @ab_test = Factory(:ab_test)
     @ab_test.update_attribute(:test_applies_to, "session")
     
     assert_equal 0, @ab_test.test_group_memberships.count
     
     # first time shouldn't be in a group yet. Will get placed in one.
-    first_group = @controller.which_test_group?("blah")
+    first_group = @controller.which_test_group?(@ab_test.sym)
     assert_include @ab_test.test_group_names, first_group
     assert_equal 1, @ab_test.test_group_memberships.count
     
-    second_group = @controller.which_test_group?("blah")
+    second_group = @controller.which_test_group?(@ab_test.sym)
     assert_include first_group, second_group
     assert_equal 1, @ab_test.test_group_memberships.count
   end
   
   test "which_test_group doesn't barf on missing member" do
-    @ab_test = IWonder::AbTest.create(:name => "Blah Test 3", :sym => "blah 3", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}})
+    @ab_test = Factory(:ab_test)
     @ab_test.update_attribute(:test_applies_to, "session")
     
     @controller.instance_eval do
@@ -85,7 +85,7 @@ class ABControllerMixinsTest < ActionController::TestCase
     end
     
     assert_equal 0, @ab_test.test_group_memberships.count
-    assert @controller.which_test_group?("blah 3").present?, "something should still be returned"
+    assert @controller.which_test_group?(@ab_test.sym).present?, "something should still be returned"
     assert_equal 0, @ab_test.test_group_memberships.count, "Shuold not have made a memberhsip"
   end
   
@@ -98,7 +98,7 @@ class ABControllerMixinsTest < ActionController::TestCase
   end
   
   test "forcing a choice with paramteres" do
-    @ab_test = IWonder::AbTest.create(:name => "Override Test", :sym => "override_test", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}}, :test_applies_to => "session")
+    @ab_test = Factory(:ab_test, :sym => "override_test")
     assert_valid @ab_test
     
     @controller.params[:_force_ab_test] = "override_test"

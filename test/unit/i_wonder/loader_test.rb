@@ -34,7 +34,7 @@ module IWonder
     test "Saves Correctly" do
       assert !File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
       
-      @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "save_test", :test_group_names => ["Options 1", "Options 2"], :ab_test_goals_attributes => {"0" => {:event_type => "success"}}, :test_applies_to => "session")
+      @ab_test = Factory(:ab_test, :name => "Blah Test", :sym => "save_test")
       AbTesting::Loader.save_ab_test(@ab_test)
       
       assert File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
@@ -48,7 +48,7 @@ module IWonder
     end
     
     test "Updates existing test" do
-      @ab_test = IWonder::AbTest.create(:name => "Different name", :sym => "save_test", :test_group_names => ["Options 2", "Options 3"], :ab_test_goals_attributes => {"0" => {:event_type => "fail"}}, :test_applies_to => "user")
+      @ab_test = Factory(:ab_test, :sym => "save_test")
       `cp #{TEST_ASSETS + "/i_wonder/save_test.xml"} #{AbTesting::Loader::AB_TEST_DATA_DIR + "/save_test.xml"}`
       
       AbTesting::Loader.load_all
@@ -67,7 +67,7 @@ module IWonder
     
     test "Test Destruction removes files" do
       assert !File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
-      @ab_test = IWonder::AbTest.create(:name => "Blah Test", :sym => "save_test", :test_group_names => ["Options 2", "Options 3"], :ab_test_goals_attributes => {"0" => {:event_type => "fail"}}, :test_applies_to => "user")
+      @ab_test = Factory(:ab_test, :sym => "save_test")
       assert File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
       @ab_test.destroy
       assert !File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
