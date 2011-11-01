@@ -6,7 +6,7 @@ module IWonder
     
     has_many :test_group_memberships, :dependent => :destroy, :foreign_key => "ab_test_sym", :primary_key => :sym
 
-    has_many :ab_test_goals, :dependent => :destroy, :foreign_key => "ab_test_sym", :primary_key => :sym
+    has_many :ab_test_goals, :dependent => :destroy, :foreign_key => "ab_test_sym", :primary_key => "sym"
     accepts_nested_attributes_for :ab_test_goals, :allow_destroy => true
     
     hash_accessor :options, :test_group_names, :type => :array, :reject_blanks => true
@@ -17,6 +17,31 @@ module IWonder
     validates_format_of :sym, :with => /^[\w\d\_]+$/, :on => :create, :message => "can only contain letters, numbers and underscores"
     validates_uniqueness_of :sym, :on => :create, :message => "must be unique"
     validates_inclusion_of :test_applies_to, :in => %w( session user account ), :on => :create, :message => "extension %s is not included in the list"
+    
+    
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    # These two methods should NOT be needed. For some reason the accepts_nested_attributes_for is not autosaving or deleting associated goals
+    
+    def ab_test_goals_attributes=(hash)
+      hash.each{|key,value|
+        goal = self.ab_test_goals.detect{|tg| tg.id == value["id"].to_i}
+        goal ||= self.ab_test_goals.build
+        goal.attributes = value
+        
+        if value["_destroy"] =~ /true|1/ or value["_destroy"].is_a?(TrueClass)
+          goal.mark_for_destruction
+        end
+      }
+    end
+    before_save :remove_deleted_test_goals
+    def remove_deleted_test_goals
+      ab_test_goals.select(&:marked_for_destruction?).each(&:destroy)
+      ab_test_goals.each(&:save)
+    end
+    
+    
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+      
     
     validate :has_two_groups_and_a_goal
     def has_two_groups_and_a_goal
@@ -30,7 +55,7 @@ module IWonder
     end
       
     after_save :save_to_file
-    def save_to_file
+    def save_to_file      
       AbTesting::Loader.save_ab_test(self)
     end
       
