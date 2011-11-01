@@ -15,7 +15,7 @@
 	</ul>
 <% end %>
 
-<% unless Rails.env.production? %>
+<% if Rails.env.development? %>
 	<p>
 		<%= button_to "Create a new ABTest", url_for(:action => :new), :method => :get%>
 	</p>

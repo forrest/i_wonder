@@ -1,12 +1,12 @@
 <div class="show">
-	<% if Rails.env.production? %>
-		<span class="description">No Modifying tests in production</span>
-	<% else %>
+	<% if Rails.env.development? %>
 		<p>
 			<%= link_to "Edit", edit_ab_test_path(@ab_test) %>
 			|
 			<%= link_to "Delete", @ab_test, :method => :delete, :confirm => "Are you sure?" %>
 		</p>
+	<% else %>
+		<span class="description">No Modifying tests in production</span>
 	<% end %>
 	
 	<h2>I wonder <%= @ab_test.name%>?</h2>
