@@ -33,7 +33,7 @@ module IWonder
             ab_test ||= AbTest.new
             
             ab_test.from_xml(file.read)
-            
+            ab_test.skip_file_save = true
             ab_test.save!
           end          
         end

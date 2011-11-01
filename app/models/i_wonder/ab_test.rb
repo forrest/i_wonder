@@ -1,6 +1,7 @@
 module IWonder
   class AbTest < ActiveRecord::Base
     attr_accessible :name, :sym, :description, :ab_test_goals_attributes, :test_applies_to, :test_group_names, :options, :test_group_data
+    attr_writer :skip_file_save
     serialize :options, Hash
     serialize :test_group_data, Hash
     
@@ -55,8 +56,10 @@ module IWonder
     end
       
     after_save :save_to_file
-    def save_to_file      
-      AbTesting::Loader.save_ab_test(self)
+    def save_to_file
+      unless @skip_file_save
+        AbTesting::Loader.save_ab_test(self)
+      end
     end
       
     after_destroy :remove_file

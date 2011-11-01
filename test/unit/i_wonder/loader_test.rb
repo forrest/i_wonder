@@ -73,6 +73,14 @@ module IWonder
       assert !File.exists?(AbTesting::Loader.send(:file_name, "save_test"))
     end
     
+    test "skips saveback when loading" do
+      @ab_test = Factory.build(:ab_test, :name => "Blah Test", :sym => "save_test")
+      @ab_test.skip_file_save = true
+      assert @ab_test.save
+      assert_valid @ab_test
+      assert !File.exists?(AbTesting::Loader.send(:file_name, "save_test")), "SHould not have saved file"
+    end
+    
   private
     
     def remove_test_xml_files
