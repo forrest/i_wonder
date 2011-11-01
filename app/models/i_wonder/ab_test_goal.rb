@@ -14,6 +14,14 @@ module IWonder
     validates_presence_of :event_type, :if => :tracks_event?
     validates_presence_of :page_view_controller, :if => :tracks_page_view?
     
+    before_validation :clean_up_controller
+    def clean_up_controller
+      if tracks_page_view?
+        page_view_controller.gsub!("Controller", "")
+        page_view_controller.downcase!
+      end
+    end
+    
     def tracks_event?
       goal_type == "Event"
     end
@@ -26,7 +34,7 @@ module IWonder
       if tracks_event?
         sc = scoped_statement.where("i_wonder_events.event_type = ?", event_type)
       else
-        sc = scoped_statement.where("i_wonder_events.event_type = ? AND controller = ?", "hit", page_view_controller)
+        sc = scoped_statement.where("i_wonder_events.event_type = ? AND i_wonder_events.controller = ?", "hit", page_view_controller)
         
         if page_view_action.present?
           sc = sc.where("i_wonder_events.action = ?", page_view_action)
