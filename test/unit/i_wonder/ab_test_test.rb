@@ -6,6 +6,8 @@ module IWonder
   class AbTestTest < ActiveSupport::TestCase
   
     test "counting results" do
+      AbTest.delete_all
+      
       @ab_test = Factory(:ab_test)
       assert_valid @ab_test
       ab_test_goal = @ab_test.ab_test_goals.first
