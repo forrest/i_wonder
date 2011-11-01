@@ -1,4 +1,4 @@
-= IWonder (Alpha)
+= IWonder (Beat)
 
 Flexible Analytics, and Testing for every corner of your rails application. I read "The Lean Startup" and got inspired. There were a few good solutions, but none of them quite did what I was looking for. 
 
