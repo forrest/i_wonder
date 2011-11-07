@@ -1,6 +1,10 @@
 module IWonder
   class MetricsController < ApplicationController
     layout "i_wonder"
+    
+    if defined?(newrelic_ignore)
+      newrelic_ignore
+    end
 
     def index
       @metrics = Metric.all

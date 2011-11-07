@@ -1,6 +1,10 @@
 module IWonder
   class AbTestsController < ApplicationController
     layout "i_wonder"
+    
+    if defined?(newrelic_ignore)
+      newrelic_ignore
+    end
 
     def index
       @ab_tests = AbTest.all

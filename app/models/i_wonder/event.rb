@@ -39,7 +39,11 @@ module IWonder
         pre_value = keys.collect{ "?" }.join(", ")
         values_array = keys.collect{|k|
           v = attr_hash[k] 
-          v = v.delete_blank.to_yaml if v.is_a?(Hash)
+          if v.is_a?(Hash)
+            v = v.delete_blank.to_yaml
+          elsif v.is_a?(String)
+            v = v.truncate(200)
+          end
           v
         }
         value_str = sanitize_sql_array( [pre_value] +  values_array) 

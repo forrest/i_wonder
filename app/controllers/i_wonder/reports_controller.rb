@@ -2,6 +2,10 @@ module IWonder
   class ReportsController < ApplicationController
     layout "i_wonder"
     
+    if defined?(newrelic_ignore)
+      newrelic_ignore
+    end
+    
     def index
       @reports = Report.all
     end

@@ -100,7 +100,13 @@ class MiddlewareTest < ActionDispatch::IntegrationTest
     assert_equal 5, IWonder::Event.count
     
     assert_include IWonder::Event.all.collect(&:event_type), "return_visit"
+  end
+  
+  test "trims down events to avoid errors" do
+    IWonder::Event.destroy_all
+    get "/test_without_report", {}, {"HTTP_REFERER" => 'http://google.com?test='+(0..500).to_a.join() }
     
+    assert_equal 2, IWonder::Event.count
   end
   
 end
