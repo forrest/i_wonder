@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.1.1"
   s.add_dependency "jquery-rails"
-  s.add_dependency 'delayed_job', '~> 2.1'
+  s.add_dependency 'delayed_job', '>= 2.1'
   s.add_dependency 'hash_accessor', '~> 1.0'
 
 
